@@ -11,18 +11,18 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #FBF8F1;
+            background-color: #FBF8F1; /* Light cream background */
         }
         .container {
-            max-width: 90%;
+            max-width: 90%; /* Responsive width for all screen sizes */
             margin: auto;
-            padding: 1.5rem 1rem;
+            padding: 1.5rem 1rem; /* Adjusted padding for better mobile fit */
         }
         .card {
             background-color: #ffffff;
             border-radius: 1rem;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            padding: 1.5rem;
+            padding: 1.5rem; /* Adjusted padding for a less congested look */
         }
         .input-field {
             width: 100%;
@@ -34,29 +34,30 @@
         }
         .input-field:focus {
             outline: none;
-            border-color: #A98E66;
+            border-color: #A98E66; /* Matching gold color on focus */
             box-shadow: 0 0 0 3px rgba(169, 142, 102, 0.3);
         }
         .result-item {
             border-radius: 0.75rem;
-            background-color: #F8F4E8;
-            padding: 1rem;
+            background-color: #F8F4E8; /* Lighter gold-toned background */
+            padding: 1rem; /* Reduced padding for a more compact feel */
         }
         .result-box {
-            background-color: #EFEBE0;
+            background-color: #EFEBE0; /* Even lighter background */
             border-radius: 0.5rem;
             padding: 1rem;
             margin-top: 0.75rem;
         }
+        /* Mobile-first adjustments for text sizes */
         @media (max-width: 640px) {
             .text-3xl {
-                font-size: 1.75rem;
+                font-size: 1.75rem; /* Smaller heading on mobile */
             }
             .text-lg {
-                font-size: 1rem;
+                font-size: 1rem; /* Smaller sub-text on mobile */
             }
             .text-2xl {
-                font-size: 1.5rem;
+                font-size: 1.5rem; /* Smaller result numbers */
             }
         }
     </style>
@@ -78,36 +79,36 @@
 
         <div class="space-y-4">
             <div class="result-item">
-                <div class="flex flex-wrap justify-between items-center">
+                <div class="flex justify-between items-center">
                     <div class="text-gray-800 font-semibold text-base">18KT Sale Rate (Per Gram)</div>
-                    <div class="text-right mt-2 sm:mt-0">
+                    <div class="text-right">
                         <span id="rate18ktSale" class="text-2xl font-bold font-mono text-[#A98E66]">0.00</span>
                     </div>
                 </div>
             </div>
             
             <div class="result-item">
-                <div class="flex flex-wrap justify-between items-center">
+                <div class="flex justify-between items-center">
                     <div class="text-gray-800 font-semibold text-base">22KT Sale Rate (Per Gram)</div>
-                    <div class="text-right mt-2 sm:mt-0">
+                    <div class="text-right">
                         <span id="rate22ktSale" class="text-2xl font-bold font-mono text-[#A98E66]">0.00</span>
                     </div>
                 </div>
             </div>
 
             <div class="result-item">
-                <div class="flex flex-wrap justify-between items-center">
+                <div class="flex justify-between items-center">
                     <div class="text-gray-800 font-semibold text-base">18KT Purchase Rate (Per Gram)</div>
-                    <div class="text-right mt-2 sm:mt-0">
+                    <div class="text-right">
                         <span id="rate18ktPurchase" class="text-2xl font-bold font-mono text-[#A98E66]">0.00</span>
                     </div>
                 </div>
             </div>
 
             <div class="result-item">
-                <div class="flex flex-wrap justify-between items-center">
+                <div class="flex justify-between items-center">
                     <div class="text-gray-800 font-semibold text-base">22KT Purchase Rate (Per Gram)</div>
-                    <div class="text-right mt-2 sm:mt-0">
+                    <div class="text-right">
                         <span id="rate22ktPurchase" class="text-2xl font-bold font-mono text-[#A98E66]">0.00</span>
                     </div>
                 </div>
@@ -129,11 +130,13 @@
             return;
         }
 
+        // Calculations based on the provided formulas
         const rate18ktSale = (rate9999 / 10) * 0.75 * 1.03; 
         const rate22ktSale = (rate9999 / 10) * 0.916 * 1.03;
         const rate18ktPurchase = rate18ktSale - 200; 
         const rate22ktPurchase = rate22ktSale - 200;
 
+        // Update the display with two decimal places
         document.getElementById('rate18ktSale').textContent = rate18ktSale.toFixed(2);
         document.getElementById('rate22ktSale').textContent = rate22ktSale.toFixed(2);
         document.getElementById('rate18ktPurchase').textContent = rate18ktPurchase.toFixed(2);
