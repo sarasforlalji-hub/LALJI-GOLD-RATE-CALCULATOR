@@ -107,6 +107,12 @@
             <label for="jewelleryWeight" class="block text-sm font-semibold text-gray-700 mb-2">Jewellery Weight (Grams)</label>
             <input type="number" id="jewelleryWeight" placeholder="Enter Weight..." class="w-full px-5 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#A98E66] shadow-sm">
           </div>
+          
+          <!-- New Other Costs Field -->
+          <div class="mb-6">
+            <label for="otherCosts" class="block text-sm font-semibold text-gray-700 mb-2">Other Costs (₹)</label>
+            <input type="number" id="otherCosts" value="0" placeholder="Enter Other Costs..." class="w-full px-5 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#A98E66] shadow-sm">
+          </div>
 
           <div class="mb-8">
             <span class="block text-sm font-semibold text-gray-700 mb-2">Purity</span>
@@ -185,13 +191,16 @@
     }
 
     function calculateJewelleryPrice(){
-      const w=parseFloat(document.getElementById('jewelleryWeight').value);
+      const w=parseFloat(document.getElementById('jewelleryWeight').value) || 0;
+      const oc=parseFloat(document.getElementById('otherCosts').value) || 0;
       const p=document.querySelector('input[name="jewelleryPurity"]:checked').value;
-      if(isNaN(w)||w<=0){salePrice.textContent=discountedPrice.textContent='0.00';return;}
+      
       let base=p==='18kt'?rate18ktSale:rate22ktSale;
       if(base===0){salePrice.textContent=discountedPrice.textContent='N/A';return;}
-      salePrice.textContent=(((base*w)*(1+jewelleryDiscountPercentage+0.03))*1.03).toFixed(2);
-      discountedPrice.textContent=(((base*w)*(1+jewelleryDiscountPercentage))*1.03).toFixed(2);
+      
+      const goldCost = base * w;
+      salePrice.textContent=(((goldCost + oc) * (1 + jewelleryDiscountPercentage + 0.03)) * 1.03).toFixed(2);
+      discountedPrice.textContent=(((goldCost + oc) * (1 + jewelleryDiscountPercentage)) * 1.03).toFixed(2);
     }
 
     // Modal logic
@@ -211,6 +220,7 @@
     // Listeners
     document.getElementById('rate9999').addEventListener('input',debounce(calculateRates,300));
     document.getElementById('jewelleryWeight').addEventListener('input',debounce(calculateJewelleryPrice,300));
+    document.getElementById('otherCosts').addEventListener('input',debounce(calculateJewelleryPrice,300));
     document.querySelectorAll('input[name="jewelleryPurity"]').forEach(r=>r.addEventListener('change',calculateJewelleryPrice));
   </script>
 </body>
