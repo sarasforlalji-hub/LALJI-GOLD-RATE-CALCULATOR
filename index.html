@@ -190,7 +190,7 @@
       if(isNaN(w)||w<=0){salePrice.textContent=discountedPrice.textContent='0.00';return;}
       let base=p==='18kt'?rate18ktSale:rate22ktSale;
       if(base===0){salePrice.textContent=discountedPrice.textContent='N/A';return;}
-      salePrice.textContent=(((base*w)*1.20)*1.03).toFixed(2);
+      salePrice.textContent=(((base*w)*(1+jewelleryDiscountPercentage+0.03))*1.03).toFixed(2);
       discountedPrice.textContent=(((base*w)*(1+jewelleryDiscountPercentage))*1.03).toFixed(2);
     }
 
