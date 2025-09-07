@@ -2,367 +2,331 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lalji Jewellers Gold Rate Calculator</title>
+    <!-- Use Tailwind CSS for rapid, beautiful styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- Icon for the settings menu -->
+    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Custom styles and animations -->
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
         body {
             font-family: 'Inter', sans-serif;
             background-color: #FBF8F1; /* Light cream background */
         }
         .container-wrapper {
-            overflow-x: hidden;
+            overflow: hidden;
             width: 100%;
+            display: flex;
+            justify-content: center;
         }
         .content-wrapper {
             display: flex;
-            transition: transform 0.5s ease-in-out;
-            width: 200%; /* Holds two full-width sections */
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            /* Updated to only show one page at a time */
+            width: 100%;
         }
         .calculator-page {
-            width: 50%;
-            flex-shrink: 0;
-            padding: 1rem; /* Consistent padding */
-        }
-        .card {
-            background-color: #ffffff;
-            border-radius: 1rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            padding: 1.5rem; /* Adjusted padding for a less congested look */
-        }
-        .input-field {
+            /* Updated to take up full width of the container */
             width: 100%;
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            border: 1px solid #d1d5db;
-            margin-top: 0.5rem;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-        .input-field:focus {
-            outline: none;
-            border-color: #A98E66; /* Matching gold color on focus */
-            box-shadow: 0 0 0 3px rgba(169, 142, 102, 0.3);
-        }
-        .result-item {
-            border-radius: 0.75rem;
-            background-color: #F8F4E8; /* Lighter gold-toned background */
-            padding: 1rem; /* Reduced padding for a more compact feel */
-        }
-        .result-box {
-            background-color: #EFEBE0; /* Even lighter background */
-            border-radius: 0.5rem;
+            flex-shrink: 0;
             padding: 1rem;
-            margin-top: 0.75rem;
         }
-        .icon-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0.5rem;
-            color: #A98E66;
-            transition: transform 0.2s;
-        }
-        .icon-btn:hover {
-            transform: scale(1.1);
-        }
-        /* Mobile-first adjustments for text sizes */
-        @media (max-width: 640px) {
-            .text-3xl {
-                font-size: 1.75rem; /* Smaller heading on mobile */
-            }
-            .text-lg {
-                font-size: 1rem; /* Smaller sub-text on mobile */
-            }
-            .text-2xl {
-                font-size: 1.5rem; /* Smaller result numbers */
-            }
-        }
-        /* Swipe indicator arrow animation */
         .swipe-indicator {
-            animation: bounce 2s infinite;
+            animation: bounce-right 2s infinite;
         }
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateX(0);
-            }
-            50% {
-                transform: translateX(-10px);
-            }
+        .swipe-indicator.rotate-180 {
+            animation: bounce-left 2s infinite;
+        }
+        @keyframes bounce-right {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(8px); }
+        }
+        @keyframes bounce-left {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-8px); }
         }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen">
-    <div class="container-wrapper">
+<body class="flex items-center justify-center min-h-screen p-4 sm:p-6">
+
+    <div class="container-wrapper max-w-2xl w-full">
         <div id="contentWrapper" class="content-wrapper">
-            <!-- First Calculator Page -->
+            <!-- First Calculator Page (Gold Rate) -->
             <div class="calculator-page">
-                <div class="card">
-                    <div class="flex flex-col items-center mb-4">
-                        <h1 class="text-3xl font-bold text-center text-[#A98E66] mb-2">Lalji Jewellers Gold Rate Calculator</h1>
-                        <!-- Swipe indicator -->
+                <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-10 border border-gray-100">
+                    <div class="flex flex-col items-center mb-6">
+                        <h1 class="text-3xl sm:text-4xl font-extrabold text-[#A98E66] text-center tracking-tight mb-2">
+                            Lalji Jewellers Gold Rate Calculator
+                        </h1>
                         <button id="swipeLeftBtn" class="text-gray-500 text-sm mt-2 flex items-center swipe-indicator" onclick="swipeLeft()">
-                            <i class="fas fa-hand-pointer mr-2"></i>Swipe Left for Jewellery Calculator<i class="fas fa-chevron-right ml-2"></i>
+                            Swipe Left for Jewellery Calculator <i class="fas fa-arrow-right ml-2"></i>
                         </button>
                     </div>
 
-                    <p class="text-center text-gray-600 mb-6 text-lg">Enter The 9999 Gold Rate To Calculate Prices For All Other Purities</p>
+                    <p class="text-center text-gray-600 mb-8 text-lg sm:text-xl font-medium">
+                        Enter the 9999 Gold Rate to calculate prices for all other purities.
+                    </p>
 
-                    <div class="mb-4">
-                        <label for="rate9999" class="block text-sm font-semibold text-gray-700">9999 Gold Rate</label>
-                        <input type="number" id="rate9999" placeholder="Enter Rate For 10-Grams..." class="input-field" oninput="calculateRates()">
+                    <div class="mb-6">
+                        <label for="rate9999" class="block text-sm font-semibold text-gray-700 mb-2">9999 Gold Rate</label>
+                        <input type="number" id="rate9999" placeholder="Enter Rate For 10-Grams..." class="w-full px-5 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#A98E66] focus:border-transparent transition-all duration-200 shadow-sm">
                     </div>
 
                     <div class="space-y-4">
-                        <!-- 18KT Sale Rate -->
-                        <div class="result-item">
-                            <div class="flex flex-col sm:flex-row justify-center sm:justify-between items-center text-center sm:text-left">
-                                <div class="text-gray-800 font-semibold text-base mb-1 sm:mb-0">18KT Sale Rate</div>
-                                <div class="text-right">
-                                    <span id="rate18ktSale" class="text-2xl font-bold font-mono text-[#A98E66]">0.00</span>
-                                </div>
+                        <div class="result-item bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-center transition-all duration-200 hover:shadow-md">
+                            <div class="text-gray-800 font-semibold text-base mb-1 sm:mb-0">18KT Sale Rate</div>
+                            <div class="text-right">
+                                <span id="rate18ktSale" class="text-2xl font-bold font-mono text-[#A98E66]">0.00</span>
                             </div>
                         </div>
-                        
-                        <!-- 22KT Sale Rate -->
-                        <div class="result-item">
-                            <div class="flex flex-col sm:flex-row justify-center sm:justify-between items-center text-center sm:text-left">
-                                <div class="text-gray-800 font-semibold text-base mb-1 sm:mb-0">22KT Sale Rate</div>
-                                <div class="text-right">
-                                    <span id="rate22ktSale" class="text-2xl font-bold font-mono text-[#A98E66]">0.00</span>
-                                </div>
+                                        
+                        <div class="result-item bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-center transition-all duration-200 hover:shadow-md">
+                            <div class="text-gray-800 font-semibold text-base mb-1 sm:mb-0">22KT Sale Rate</div>
+                            <div class="text-right">
+                                <span id="rate22ktSale" class="text-2xl font-bold font-mono text-[#A98E66]">0.00</span>
                             </div>
                         </div>
 
-                        <!-- 18KT Purchase Rate -->
-                        <div class="result-item">
-                            <div class="flex flex-col sm:flex-row justify-center sm:justify-between items-center text-center sm:text-left">
-                                <div class="text-gray-800 font-semibold text-base mb-1 sm:mb-0">18KT Purchase Rate</div>
-                                <div class="text-right">
-                                    <span id="rate18ktPurchase" class="text-2xl font-bold font-mono text-[#A98E66]">0.00</span>
-                                </div>
+                        <div class="result-item bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-center transition-all duration-200 hover:shadow-md">
+                            <div class="text-gray-800 font-semibold text-base mb-1 sm:mb-0">18KT Purchase Rate</div>
+                            <div class="text-right">
+                                <span id="rate18ktPurchase" class="text-2xl font-bold font-mono text-[#A98E66]">0.00</span>
                             </div>
                         </div>
 
-                        <!-- 22KT Purchase Rate -->
-                        <div class="result-item">
-                            <div class="flex flex-col sm:flex-row justify-center sm:justify-between items-center text-center sm:text-left">
-                                <div class="text-gray-800 font-semibold text-base mb-1 sm:mb-0">22KT Purchase Rate</div>
-                                <div class="text-right">
-                                    <span id="rate22ktPurchase" class="text-2xl font-bold font-mono text-[#A98E66]">0.00</span>
-                                </div>
+                        <div class="result-item bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-center transition-all duration-200 hover:shadow-md">
+                            <div class="text-gray-800 font-semibold text-base mb-1 sm:mb-0">22KT Purchase Rate</div>
+                            <div class="text-right">
+                                <span id="rate22ktPurchase" class="text-2xl font-bold font-mono text-[#A98E66]">0.00</span>
                             </div>
                         </div>
                     </div>
-                    <p class="text-xs text-gray-400 text-center mt-6">© Copyright Of Lalji Gems & Jewellers Pvt. Ltd.</p>
+                    <p class="text-xs text-gray-400 text-center mt-8">© Copyright Of Lalji Gems & Jewellers Pvt. Ltd.</p>
                 </div>
             </div>
 
             <!-- Second Calculator Page (Jewellery Calculator) -->
             <div class="calculator-page">
-                <div class="card relative">
-                    <!-- Settings Button for Hidden Menu -->
-                    <div class="absolute top-4 right-4">
-                        <button id="settingsBtn" class="icon-btn">
-                            <i class="fas fa-cog text-xl"></i>
+                <div class="card relative bg-white rounded-3xl shadow-2xl p-6 sm:p-10 border border-gray-100">
+                    <div class="absolute top-6 right-6">
+                        <button id="settingsBtn" class="icon-btn text-gray-500 hover:text-gray-800 transition-colors duration-200">
+                            <i class="fas fa-cog text-2xl"></i>
                         </button>
                     </div>
 
-                    <div class="flex flex-col items-center mb-4">
-                        <h1 class="text-3xl font-bold text-center text-[#A98E66] mb-2">Jewellery Price Calculator</h1>
-                        <!-- Swipe indicator -->
+                    <div class="flex flex-col items-center mb-6">
+                        <h1 class="text-3xl sm:text-4xl font-extrabold text-[#A98E66] text-center tracking-tight mb-2">
+                            Jewellery Price Calculator
+                        </h1>
                         <button id="swipeRightBtn" class="text-gray-500 text-sm mt-2 flex items-center swipe-indicator rotate-180" onclick="swipeRight()">
-                            <i class="fas fa-hand-pointer mr-2"></i>Swipe Right to go Back<i class="fas fa-chevron-left ml-2"></i>
+                            <i class="fas fa-arrow-left mr-2"></i>Swipe Right to go Back
                         </button>
                     </div>
-                    <p class="text-center text-gray-600 mb-6 text-lg">Calculate Sale & Discounted Prices</p>
+                    <p class="text-center text-gray-600 mb-8 text-lg sm:text-xl font-medium">
+                        Calculate Sale & Discounted Prices.
+                    </p>
 
                     <!-- Hidden Settings Menu -->
-                    <div id="settingsMenu" class="absolute top-0 left-0 right-0 bottom-0 bg-white/95 backdrop-blur-sm rounded-xl p-6 flex flex-col items-center justify-center hidden z-10">
+                    <div id="settingsMenu" class="absolute inset-0 bg-white/95 backdrop-blur-sm rounded-3xl p-6 flex flex-col items-center justify-center hidden z-10">
                         <h2 class="text-2xl font-bold text-gray-700 mb-4">Change Discount Percentage</h2>
                         <label for="discountPercentage" class="block text-sm font-semibold text-gray-700">New Discount Rate (%)</label>
-                        <input type="number" id="discountPercentage" placeholder="e.g., 17" class="input-field max-w-xs text-center mb-4" value="17">
+                        <input type="number" id="discountPercentage" placeholder="e.g., 17" class="input-field max-w-xs text-center w-full px-5 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#A98E66] focus:border-transparent transition-all duration-200 shadow-sm mb-4" value="17">
                         <p class="text-sm text-gray-500 text-center">Enter a number (e.g., 17 for 17%).</p>
-                        <button onclick="toggleSettingsMenu()" class="mt-6 px-6 py-2 bg-[#A98E66] text-white rounded-full font-bold shadow-md hover:bg-[#8F795B]">Close</button>
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="jewelleryWeight" class="block text-sm font-semibold text-gray-700">Jewellery Weight (Grams)</label>
-                        <input type="number" id="jewelleryWeight" placeholder="Enter Weight..." class="input-field" oninput="calculateJewelleryPrice()">
+                        <button onclick="toggleSettingsMenu()" class="mt-6 px-8 py-3 bg-[#A98E66] text-white rounded-full font-bold shadow-lg hover:bg-[#8F795B] transition-colors duration-200">Close</button>
                     </div>
 
                     <div class="mb-6">
+                        <label for="jewelleryWeight" class="block text-sm font-semibold text-gray-700 mb-2">Jewellery Weight (Grams)</label>
+                        <input type="number" id="jewelleryWeight" placeholder="Enter Weight..." class="w-full px-5 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#A98E66] focus:border-transparent transition-all duration-200 shadow-sm">
+                    </div>
+
+                    <div class="mb-8">
                         <span class="block text-sm font-semibold text-gray-700 mb-2">Purity</span>
-                        <div class="flex justify-around">
-                            <label class="flex items-center space-x-2">
-                                <input type="radio" name="jewelleryPurity" value="18kt" checked onchange="calculateJewelleryPrice()">
-                                <span class="text-gray-800">18KT</span>
+                        <div class="flex justify-around space-x-2">
+                            <label class="flex-1 flex items-center justify-center p-3 border border-gray-300 rounded-full cursor-pointer transition-colors duration-200 hover:bg-gray-100 has-[:checked]:bg-[#A98E66] has-[:checked]:text-white has-[:checked]:font-bold has-[:checked]:shadow-inner">
+                                <input type="radio" name="jewelleryPurity" value="18kt" checked class="hidden">
+                                <span>18KT</span>
                             </label>
-                            <label class="flex items-center space-x-2">
-                                <input type="radio" name="jewelleryPurity" value="22kt" onchange="calculateJewelleryPrice()">
-                                <span class="text-gray-800">22KT</span>
+                            <label class="flex-1 flex items-center justify-center p-3 border border-gray-300 rounded-full cursor-pointer transition-colors duration-200 hover:bg-gray-100 has-[:checked]:bg-[#A98E66] has-[:checked]:text-white has-[:checked]:font-bold has-[:checked]:shadow-inner">
+                                <input type="radio" name="jewelleryPurity" value="22kt" class="hidden">
+                                <span>22KT</span>
                             </label>
                         </div>
                     </div>
 
                     <div class="space-y-4">
-                        <!-- Sale Price -->
-                        <div class="result-item">
-                            <div class="flex flex-col sm:flex-row justify-center sm:justify-between items-center text-center sm:text-left">
-                                <div class="text-gray-800 font-semibold text-base mb-1 sm:mb-0">Sale Price</div>
-                                <div class="text-right">
-                                    <span id="salePrice" class="text-2xl font-bold font-mono text-[#A98E66]">0.00</span>
-                                </div>
+                        <div class="result-item bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-center transition-all duration-200 hover:shadow-md">
+                            <div class="text-gray-800 font-semibold text-base mb-1 sm:mb-0">Sale Price</div>
+                            <div class="text-right">
+                                <span id="salePrice" class="text-2xl font-bold font-mono text-[#A98E66]">0.00</span>
                             </div>
                         </div>
 
-                        <!-- Discounted Price -->
-                        <div class="result-item">
-                            <div class="flex flex-col sm:flex-row justify-center sm:justify-between items-center text-center sm:text-left">
-                                <div class="text-gray-800 font-semibold text-base mb-1 sm:mb-0">Discounted Price</div>
-                                <div class="text-right">
-                                    <span id="discountedPrice" class="text-2xl font-bold font-mono text-[#A98E66]">0.00</span>
-                                </div>
+                        <div class="result-item bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-center transition-all duration-200 hover:shadow-md">
+                            <div class="text-gray-800 font-semibold text-base mb-1 sm:mb-0">Discounted Price</div>
+                            <div class="text-right">
+                                <span id="discountedPrice" class="text-2xl font-bold font-mono text-[#A98E66]">0.00</span>
                             </div>
                         </div>
                     </div>
+                    <p class="text-sm text-gray-500 text-center mt-6">Note: All prices include 3% GST.</p>
                     <p class="text-xs text-gray-400 text-center mt-6">© Copyright Of Lalji Gems & Jewellers Pvt. Ltd.</p>
                 </div>
             </div>
         </div>
     </div>
-    
-<script>
-    // Global variables to store rates and the hidden discount percentage
-    let rate18ktSale = 0;
-    let rate22ktSale = 0;
-    let jewelleryDiscountPercentage = 0.17; // Default 17%
 
-    // Touch event variables
-    let touchStartX = 0;
-    let touchEndX = 0;
-    const swipeThreshold = 50;
+    <!-- Combined JavaScript Logic -->
+    <script>
+        // Global variables to store rates and the hidden discount percentage
+        let rate18ktSale = 0;
+        let rate22ktSale = 0;
+        let jewelleryDiscountPercentage = 0.17; // Default 17%
 
-    // Get the main content wrapper for swiping
-    const contentWrapper = document.getElementById('contentWrapper');
-    
-    document.addEventListener('touchstart', e => {
-        touchStartX = e.touches[0].clientX;
-    });
+        // Debounce function to limit how often a function is called
+        function debounce(func, delay) {
+            let timeout;
+            return function(...args) {
+                const context = this;
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(context, args), delay);
+            };
+        }
 
-    document.addEventListener('touchmove', e => {
-        touchEndX = e.touches[0].clientX;
-    });
+        // Touch event variables for mobile swiping
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const swipeThreshold = 50;
 
-    document.addEventListener('touchend', e => {
-        const diff = touchEndX - touchStartX;
-        if (Math.abs(diff) > swipeThreshold) {
-            if (diff < 0) { // Swipe left
-                swipeLeft();
-            } else { // Swipe right
-                swipeRight();
+        // Get the main content wrapper for swiping
+        const contentWrapper = document.getElementById('contentWrapper');
+
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.touches[0].clientX;
+        });
+
+        document.addEventListener('touchmove', e => {
+            touchEndX = e.touches[0].clientX;
+        });
+
+        document.addEventListener('touchend', e => {
+            const diff = touchEndX - touchStartX;
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff < 0) { // Swipe left
+                    swipeLeft();
+                } else { // Swipe right
+                    swipeRight();
+                }
             }
-        }
-    });
+        });
 
-    function swipeLeft() {
-        contentWrapper.style.transform = 'translateX(-50%)';
-    }
-
-    function swipeRight() {
-        contentWrapper.style.transform = 'translateX(0)';
-    }
-
-    // Update the global rates and the UI for the main calculator
-    function calculateRates() {
-        const rate9999 = parseFloat(document.getElementById('rate9999').value);
-
-        if (isNaN(rate9999) || rate9999 <= 0) {
-            document.getElementById('rate18ktSale').textContent = '0.00';
-            document.getElementById('rate22ktSale').textContent = '0.00';
-            document.getElementById('rate18ktPurchase').textContent = '0.00';
-            document.getElementById('rate22ktPurchase').textContent = '0.00';
-            // Also reset global rates
-            rate18ktSale = 0;
-            rate22ktSale = 0;
-            return;
+        // Function to slide the view to the left (Jewellery Calculator)
+        function swipeLeft() {
+            contentWrapper.style.transform = 'translateX(-100%)';
         }
 
-        // Calculations based on the provided formulas
-        rate18ktSale = ((rate9999 / 10) * 0.9708738) * 0.75;
-        rate22ktSale = ((rate9999 / 10) * 0.9708738) * 0.916;
-        const rate18ktPurchase = rate18ktSale - 200;
-        const rate22ktPurchase = rate22ktSale - 200;
-
-        // Update the display with two decimal places
-        document.getElementById('rate18ktSale').textContent = rate18ktSale.toFixed(2);
-        document.getElementById('rate22ktSale').textContent = rate22ktSale.toFixed(2);
-        document.getElementById('rate18ktPurchase').textContent = rate18ktPurchase.toFixed(2);
-        document.getElementById('rate22ktPurchase').textContent = rate22ktPurchase.toFixed(2);
-        
-        // Also call the jewellery calculator to update its values
-        calculateJewelleryPrice();
-    }
-
-    // New function to calculate jewellery price
-    function calculateJewelleryPrice() {
-        const weight = parseFloat(document.getElementById('jewelleryWeight').value);
-        const purity = document.querySelector('input[name="jewelleryPurity"]:checked').value;
-
-        if (isNaN(weight) || weight <= 0) {
-            document.getElementById('salePrice').textContent = '0.00';
-            document.getElementById('discountedPrice').textContent = '0.00';
-            return;
+        // Function to slide the view to the right (main calculator)
+        function swipeRight() {
+            contentWrapper.style.transform = 'translateX(0)';
         }
 
-        let baseRate = 0;
-        if (purity === '18kt') {
-            baseRate = rate18ktSale;
-        } else if (purity === '22kt') {
-            baseRate = rate22ktSale;
+        // Update the global rates and the UI for the main calculator
+        function calculateRates() {
+            const rate9999 = parseFloat(document.getElementById('rate9999').value);
+
+            if (isNaN(rate9999) || rate9999 <= 0) {
+                document.getElementById('rate18ktSale').textContent = '0.00';
+                document.getElementById('rate22ktSale').textContent = '0.00';
+                document.getElementById('rate18ktPurchase').textContent = '0.00';
+                document.getElementById('rate22ktPurchase').textContent = '0.00';
+                // Also reset global rates
+                rate18ktSale = 0;
+                rate22ktSale = 0;
+                return;
+            }
+
+            // Calculations based on the provided formulas
+            rate18ktSale = ((rate9999 / 10) * 0.9708738) * 0.75;
+            rate22ktSale = ((rate9999 / 10) * 0.9708738) * 0.916;
+            const rate18ktPurchase = rate18ktSale - 200;
+            const rate22ktPurchase = rate22ktSale - 200;
+
+            // Update the display with two decimal places
+            document.getElementById('rate18ktSale').textContent = rate18ktSale.toFixed(2);
+            document.getElementById('rate22ktSale').textContent = rate22ktSale.toFixed(2);
+            document.getElementById('rate18ktPurchase').textContent = rate18ktPurchase.toFixed(2);
+            document.getElementById('rate22ktPurchase').textContent = rate22ktPurchase.toFixed(2);
+            
+            // Also call the jewellery calculator to update its values
+            calculateJewelleryPrice();
         }
 
-        if (baseRate === 0) {
-            // No base rate is set, probably because the first field is empty
-            document.getElementById('salePrice').textContent = 'N/A';
-            document.getElementById('discountedPrice').textContent = 'N/A';
-            return;
+        // New function to calculate jewellery price
+        function calculateJewelleryPrice() {
+            const weight = parseFloat(document.getElementById('jewelleryWeight').value);
+            const purity = document.querySelector('input[name="jewelleryPurity"]:checked').value;
+
+            if (isNaN(weight) || weight <= 0) {
+                document.getElementById('salePrice').textContent = '0.00';
+                document.getElementById('discountedPrice').textContent = '0.00';
+                return;
+            }
+
+            let baseRate = 0;
+            if (purity === '18kt') {
+                baseRate = rate18ktSale;
+            } else if (purity === '22kt') {
+                baseRate = rate22ktSale;
+            }
+
+            if (baseRate === 0) {
+                // No base rate is set, probably because the first field is empty
+                document.getElementById('salePrice').textContent = 'N/A';
+                document.getElementById('discountedPrice').textContent = 'N/A';
+                return;
+            }
+
+            // Calculate sale price with a 20% markup, then add 3% GST
+            const salePrice = ((baseRate * weight) * 1.20) * 1.03;
+
+            // Calculate discounted price with the hidden discount percentage, then add 3% GST
+            const discountedPrice = ((baseRate * weight) * (1 + jewelleryDiscountPercentage)) * 1.03;
+
+            document.getElementById('salePrice').textContent = salePrice.toFixed(2);
+            document.getElementById('discountedPrice').textContent = discountedPrice.toFixed(2);
         }
 
-        // Calculate sale price (20% markup)
-        const salePrice = (baseRate * weight) * 1.20;
+        // Hidden menu functionality
+        const settingsBtn = document.getElementById('settingsBtn');
+        const settingsMenu = document.getElementById('settingsMenu');
+        const discountPercentageInput = document.getElementById('discountPercentage');
 
-        // Calculate discounted price (17% default, can be changed)
-        const discountedPrice = (baseRate * weight) * (1 + jewelleryDiscountPercentage);
-
-        document.getElementById('salePrice').textContent = salePrice.toFixed(2);
-        document.getElementById('discountedPrice').textContent = discountedPrice.toFixed(2);
-    }
-    
-    // Hidden menu functionality
-    const settingsBtn = document.getElementById('settingsBtn');
-    const settingsMenu = document.getElementById('settingsMenu');
-    const discountPercentageInput = document.getElementById('discountPercentage');
-
-    function toggleSettingsMenu() {
-        settingsMenu.classList.toggle('hidden');
-    }
-
-    // Event listener for the settings button
-    settingsBtn.addEventListener('click', toggleSettingsMenu);
-
-    // Event listener to update the discount percentage when the input changes
-    discountPercentageInput.addEventListener('input', () => {
-        const newDiscount = parseFloat(discountPercentageInput.value);
-        if (!isNaN(newDiscount) && newDiscount >= 0) {
-            jewelleryDiscountPercentage = newDiscount / 100;
-            calculateJewelleryPrice(); // Recalculate prices
+        function toggleSettingsMenu() {
+            settingsMenu.classList.toggle('hidden');
         }
-    });
-</script>
+
+        // Event listener for the settings button
+        settingsBtn.addEventListener('click', toggleSettingsMenu);
+
+        // Event listener to update the discount percentage when the input changes
+        discountPercentageInput.addEventListener('input', () => {
+            const newDiscount = parseFloat(discountPercentageInput.value);
+            if (!isNaN(newDiscount) && newDiscount >= 0) {
+                jewelleryDiscountPercentage = newDiscount / 100;
+                calculateJewelleryPrice(); // Recalculate prices
+            }
+        });
+
+        // Update the event listeners for the input fields to use the debounce function
+        document.getElementById('rate9999').addEventListener('input', debounce(calculateRates, 300));
+        document.getElementById('jewelleryWeight').addEventListener('input', debounce(calculateJewelleryPrice, 300));
+
+        // Update the event listeners for the radio buttons
+        document.querySelectorAll('input[name="jewelleryPurity"]').forEach(radio => {
+            radio.addEventListener('change', calculateJewelleryPrice);
+        });
+    </script>
 </body>
 </html>
