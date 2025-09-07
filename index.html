@@ -122,8 +122,15 @@
 
           <!-- Results -->
           <div class="space-y-4">
-            <div class="bg-gray-50 rounded-2xl p-4 flex justify-between items-center"><span>Sale Price</span><span id="salePrice" class="text-2xl font-bold text-[#A98E66]">0.00</span></div>
-            <div class="bg-gray-50 rounded-2xl p-4 flex justify-between items-center"><span>Discounted Price</span><span id="discountedPrice" class="text-2xl font-bold text-[#A98E66]">0.00</span></div>
+            <!-- Edited for mobile responsiveness -->
+            <div class="bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center">
+              <span>Sale Price</span>
+              <span id="salePrice" class="text-2xl font-bold text-[#A98E66] mt-1 sm:mt-0">0.00</span>
+            </div>
+            <div class="bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center">
+              <span>Discounted Price</span>
+              <span id="discountedPrice" class="text-2xl font-bold text-[#A98E66] mt-1 sm:mt-0">0.00</span>
+            </div>
           </div>
 
           <p class="text-sm text-gray-500 text-center mt-6">Note: All prices include 3% GST.</p>
