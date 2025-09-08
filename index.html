@@ -141,14 +141,22 @@
 
           <!-- Results -->
           <div class="space-y-4">
-            <!-- Edited for mobile responsiveness -->
+            <!-- Sale Price Field -->
             <div class="bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center">
               <span>Sale Price</span>
               <span id="salePrice" class="text-2xl font-bold text-[#A98E66] mt-1 sm:mt-0">0.00</span>
             </div>
+
+            <!-- Discounted Price Field -->
             <div class="bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center">
               <span>Discounted Price</span>
               <span id="discountedPrice" class="text-2xl font-bold text-[#A98E66] mt-1 sm:mt-0">0.00</span>
+            </div>
+            
+            <!-- New Return Field -->
+            <div class="bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center">
+              <span>Return</span>
+              <span id="returnValue" class="text-2xl font-bold text-[#A98E66] mt-1 sm:mt-0">0.00 g</span>
             </div>
           </div>
 
@@ -382,6 +390,14 @@
       const p=document.querySelector('input[name="jewelleryPurity"]:checked').value;
       const userEnteredMC = parseFloat(document.getElementById('makingChargePercentageInput').value) || 17;
 
+      let purityDecimal = 0;
+      if(p==='14kt'){ purityDecimal = 0.583; } 
+      else if(p==='18kt'){ purityDecimal = 0.75; } 
+      else if(p==='22kt'){ purityDecimal = 0.916; }
+      
+      const returnValue = w * purityDecimal;
+      document.getElementById('returnValue').textContent = `${returnValue.toFixed(2)} g`;
+      
       let base=0;
       if(p==='14kt'){
         base = goldRates.sale['14kt'];
