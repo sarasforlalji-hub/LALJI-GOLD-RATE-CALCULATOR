@@ -400,22 +400,18 @@
       
       const goldCost = base * w;
       const totalCost = goldCost + oc;
-      
-      let finalSalePrice, finalDiscountedPrice;
+      const makingCharge = totalCost * (userEnteredMC / 100);
+      let salePriceValue = totalCost + makingCharge;
+      let discountedPriceValue = totalCost * (1 + userEnteredMC / 100);
+
+      // Now apply GST based on the toggle state
       if (isGstEnabled) {
-          const mcForSalePrice = (userEnteredMC + 3) / 100;
-          const mcForDiscountedPrice = userEnteredMC / 100;
-          finalSalePrice = totalCost * (1 + mcForSalePrice);
-          finalDiscountedPrice = totalCost * (1 + mcForDiscountedPrice);
-      } else {
-          const mcForSalePrice = userEnteredMC / 100;
-          const mcForDiscountedPrice = userEnteredMC / 100;
-          finalSalePrice = totalCost * (1 + mcForSalePrice);
-          finalDiscountedPrice = totalCost * (1 + mcForDiscountedPrice);
+          salePriceValue *= 1.03;
+          discountedPriceValue *= 1.03;
       }
       
-      document.getElementById('salePrice').textContent = finalSalePrice.toFixed(2);
-      document.getElementById('discountedPrice').textContent = finalDiscountedPrice.toFixed(2);
+      document.getElementById('salePrice').textContent = salePriceValue.toFixed(2);
+      document.getElementById('discountedPrice').textContent = discountedPriceValue.toFixed(2);
     }
 
     /**
