@@ -36,7 +36,14 @@
       
       <!-- First Calculator Page (Gold Rate) -->
       <div class="calculator-page">
-        <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-10 border border-gray-100 max-w-md w-full">
+        <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-10 border border-gray-100 max-w-md w-full relative">
+          <!-- New Toggle Rates button -->
+          <div class="absolute top-4 right-4 sm:top-6 sm:right-6">
+            <button id="toggleRatesBtn" class="text-gray-600 hover:text-[#A98E66] transition text-sm">
+              <i class="fas fa-sync-alt text-lg"></i>
+            </button>
+          </div>
+          
           <div class="flex flex-col items-center mb-6">
             <h1 class="text-3xl sm:text-4xl font-extrabold text-[#A98E66] text-center mb-2">
               Gold Rate Calculator
@@ -50,31 +57,8 @@
             <label for="rate9999" class="block text-sm font-semibold text-gray-700 mb-2">9999 Gold Rate</label>
             <input type="number" id="rate9999" placeholder="Enter Rate For 10-Grams..." class="w-full px-5 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#A98E66] focus:border-transparent shadow-sm">
           </div>
-          <div class="space-y-4">
-            <div class="bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center">
-              <span>14KT Sale Rate</span>
-              <span id="rate14ktSale" class="text-2xl font-bold text-[#A98E66] mt-1 sm:mt-0">0.00</span>
-            </div>
-            <div class="bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center">
-              <span>18KT Sale Rate</span>
-              <span id="rate18ktSale" class="text-2xl font-bold text-[#A98E66] mt-1 sm:mt-0">0.00</span>
-            </div>
-            <div class="bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center">
-              <span>22KT Sale Rate</span>
-              <span id="rate22ktSale" class="text-2xl font-bold text-[#A98E66] mt-1 sm:mt-0">0.00</span>
-            </div>
-            <div class="bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center">
-              <span>14KT Purchase Rate</span>
-              <span id="rate14ktPurchase" class="text-2xl font-bold text-[#A98E66] mt-1 sm:mt-0">0.00</span>
-            </div>
-            <div class="bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center">
-              <span>18KT Purchase Rate</span>
-              <span id="rate18ktPurchase" class="text-2xl font-bold text-[#A98E66] mt-1 sm:mt-0">0.00</span>
-            </div>
-            <div class="bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center">
-              <span>22KT Purchase Rate</span>
-              <span id="rate22ktPurchase" class="text-2xl font-bold text-[#A98E66] mt-1 sm:mt-0">0.00</span>
-            </div>
+          <div id="goldRatesDisplay" class="space-y-4">
+            <!-- Rates will be dynamically populated here -->
           </div>
           <p class="text-xs text-gray-400 text-center mt-8">© Copyright Of Lalji Gems & Jewellers Pvt. Ltd.</p>
         </div>
@@ -233,7 +217,12 @@
 
   <script>
     let rate14ktSale=0, rate18ktSale=0, rate22ktSale=0, jewelleryDiscountPercentage=0.17;
+    let isSaleRateView = true; // New state variable
     let currentPage = 0; // 0: Gold, 1: Jewellery, 2: Diamond
+    let goldRates = {
+        sale: { '14kt': 0, '18kt': 0, '22kt': 0 },
+        purchase: { '14kt': 0, '18kt': 0, '22kt': 0 }
+    };
 
     /**
      * Creates a debounced function that delays its execution until a specified time has passed.
@@ -290,17 +279,52 @@
     // Rates calculation
     function calculateRates(){
       const r=parseFloat(document.getElementById('rate9999').value);
-      if(isNaN(r)||r<=0){['rate14ktSale','rate18ktSale','rate22ktSale','rate14ktPurchase','rate18ktPurchase','rate22ktPurchase'].forEach(id=>document.getElementById(id).textContent='0.00');rate14ktSale=0;rate18ktSale=0;rate22ktSale=0;return;}
-      rate14ktSale=((r/10)*0.9708738)*0.583;
-      rate18ktSale=((r/10)*0.9708738)*0.75; 
-      rate22ktSale=((r/10)*0.9708738)*0.916;
-      document.getElementById('rate14ktSale').textContent=rate14ktSale.toFixed(2);
-      document.getElementById('rate18ktSale').textContent=rate18ktSale.toFixed(2);
-      document.getElementById('rate22ktSale').textContent=rate22ktSale.toFixed(2);
-      document.getElementById('rate14ktPurchase').textContent=(rate14ktSale-200).toFixed(2);
-      document.getElementById('rate18ktPurchase').textContent=(rate18ktSale-200).toFixed(2);
-      document.getElementById('rate22ktPurchase').textContent=(rate22ktSale-200).toFixed(2);
+      if(isNaN(r)||r<=0){
+        goldRates.sale = { '14kt': 0, '18kt': 0, '22kt': 0 };
+        goldRates.purchase = { '14kt': 0, '18kt': 0, '22kt': 0 };
+      } else {
+        const ratePerGram9708 = (r / 10) * 0.9708738;
+        goldRates.sale['14kt'] = ratePerGram9708 * 0.583;
+        goldRates.sale['18kt'] = ratePerGram9708 * 0.75; 
+        goldRates.sale['22kt'] = ratePerGram9708 * 0.916;
+        
+        goldRates.purchase['14kt'] = goldRates.sale['14kt'] - 200;
+        goldRates.purchase['18kt'] = goldRates.sale['18kt'] - 200;
+        goldRates.purchase['22kt'] = goldRates.sale['22kt'] - 200;
+      }
+
+      updateGoldRatesDisplay();
       calculateJewelleryPrice();
+    }
+    
+    /**
+     * Updates the gold rate display based on the current view (Sale or Purchase).
+     */
+    function updateGoldRatesDisplay() {
+        const ratesContainer = document.getElementById('goldRatesDisplay');
+        ratesContainer.innerHTML = ''; // Clear existing content
+        const ratesToDisplay = isSaleRateView ? goldRates.sale : goldRates.purchase;
+
+        const rateNames = ['14KT', '18KT', '22KT'];
+        rateNames.forEach(name => {
+            const kt = name.toLowerCase();
+            const value = ratesToDisplay[kt];
+            const displayTitle = `${name} ${isSaleRateView ? 'Sale' : 'Purchase'} Rate`;
+            const html = `
+                <div class="bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center">
+                    <span>${displayTitle}</span>
+                    <span id="rate${kt}${isSaleRateView ? 'Sale' : 'Purchase'}" class="text-2xl font-bold text-[#A98E66] mt-1 sm:mt-0">${value.toFixed(2)}</span>
+                </div>`;
+            ratesContainer.innerHTML += html;
+        });
+    }
+
+    /**
+     * Toggles the view between Sale Rates and Purchase Rates.
+     */
+    function toggleRateView() {
+        isSaleRateView = !isSaleRateView;
+        updateGoldRatesDisplay();
     }
     
     /**
@@ -331,14 +355,17 @@
       
       let base=0;
       if(p==='14kt'){
-        base = rate14ktSale;
+        base = goldRates.sale['14kt'];
       } else if(p==='18kt'){
-        base = rate18ktSale;
+        base = goldRates.sale['18kt'];
       } else if(p==='22kt'){
-        base = rate22ktSale;
+        base = goldRates.sale['22kt'];
       }
 
-      if(base===0){salePrice.textContent=discountedPrice.textContent='N/A';return;}
+      if(base===0){
+        salePrice.textContent=discountedPrice.textContent='N/A';
+        return;
+      }
       
       const goldCost = base * w;
       salePrice.textContent=(((goldCost + oc) * (1 + jewelleryDiscountPercentage + 0.03)) * 1.03).toFixed(2);
@@ -371,6 +398,10 @@
     document.getElementById('diamondCaratWeight2').addEventListener('input', debounce(calculateDiamondTotal, 300));
     document.getElementById('diamondCaratRate3').addEventListener('input', debounce(calculateDiamondTotal, 300));
     document.getElementById('diamondCaratWeight3').addEventListener('input', debounce(calculateDiamondTotal, 300));
+    document.getElementById('toggleRatesBtn').addEventListener('click', toggleRateView);
+
+    // Initial load
+    updateGoldRatesDisplay();
   </script>
 </body>
 </html>
