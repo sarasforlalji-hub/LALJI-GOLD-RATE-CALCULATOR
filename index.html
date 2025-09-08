@@ -51,7 +51,10 @@
             <input type="number" id="rate9999" placeholder="Enter Rate For 10-Grams..." class="w-full px-5 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#A98E66] focus:border-transparent shadow-sm">
           </div>
           <div class="space-y-4">
-            <!-- Edited for mobile responsiveness -->
+            <div class="bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center">
+              <span>14KT Sale Rate</span>
+              <span id="rate14ktSale" class="text-2xl font-bold text-[#A98E66] mt-1 sm:mt-0">0.00</span>
+            </div>
             <div class="bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center">
               <span>18KT Sale Rate</span>
               <span id="rate18ktSale" class="text-2xl font-bold text-[#A98E66] mt-1 sm:mt-0">0.00</span>
@@ -59,6 +62,10 @@
             <div class="bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center">
               <span>22KT Sale Rate</span>
               <span id="rate22ktSale" class="text-2xl font-bold text-[#A98E66] mt-1 sm:mt-0">0.00</span>
+            </div>
+            <div class="bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center">
+              <span>14KT Purchase Rate</span>
+              <span id="rate14ktPurchase" class="text-2xl font-bold text-[#A98E66] mt-1 sm:mt-0">0.00</span>
             </div>
             <div class="bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center">
               <span>18KT Purchase Rate</span>
@@ -85,9 +92,16 @@
 
           <div class="flex flex-col items-center mb-6">
             <h1 class="text-3xl sm:text-4xl font-extrabold text-[#A98E66] text-center mb-2">Jewellery Price Calculator</h1>
-            <button class="text-gray-500 text-sm mt-2 flex items-center swipe-indicator" onclick="swipe(2)">
-              Swipe Left for Diamond Calculator <i class="fas fa-arrow-right ml-2"></i>
-            </button>
+            
+            <!-- New buttons for navigation -->
+            <div class="flex justify-between w-full mt-2">
+              <button class="text-gray-500 text-sm flex items-center swipe-indicator rotate-180" onclick="swipe(0)">
+                <i class="fas fa-arrow-left mr-2"></i>Swipe Right to go Back
+              </button>
+              <button class="text-gray-500 text-sm flex items-center swipe-indicator" onclick="swipe(2)">
+                Swipe Left for Diamond Calculator <i class="fas fa-arrow-right ml-2"></i>
+              </button>
+            </div>
           </div>
 
           <p class="text-center text-gray-600 mb-8 text-lg">Calculate Sale Price</p>
@@ -107,6 +121,9 @@
           <div class="mb-8">
             <span class="block text-sm font-semibold text-gray-700 mb-2">Purity</span>
             <div class="flex justify-around space-x-2">
+              <label class="flex-1 flex items-center justify-center p-3 border border-gray-300 rounded-full cursor-pointer hover:bg-gray-100">
+                <input type="radio" name="jewelleryPurity" value="14kt" class="hidden"><span>14KT</span>
+              </label>
               <label class="flex-1 flex items-center justify-center p-3 border border-gray-300 rounded-full cursor-pointer hover:bg-gray-100">
                 <input type="radio" name="jewelleryPurity" value="18kt" checked class="hidden"><span>18KT</span>
               </label>
@@ -215,7 +232,7 @@
   </div>
 
   <script>
-    let rate18ktSale=0, rate22ktSale=0, jewelleryDiscountPercentage=0.17;
+    let rate14ktSale=0, rate18ktSale=0, rate22ktSale=0, jewelleryDiscountPercentage=0.17;
     let currentPage = 0; // 0: Gold, 1: Jewellery, 2: Diamond
 
     /**
@@ -273,10 +290,14 @@
     // Rates calculation
     function calculateRates(){
       const r=parseFloat(document.getElementById('rate9999').value);
-      if(isNaN(r)||r<=0){['rate18ktSale','rate22ktSale','rate18ktPurchase','rate22ktPurchase'].forEach(id=>document.getElementById(id).textContent='0.00');rate18ktSale=0;rate22ktSale=0;return;}
-      rate18ktSale=((r/10)*0.9708738)*0.75; rate22ktSale=((r/10)*0.9708738)*0.916;
+      if(isNaN(r)||r<=0){['rate14ktSale','rate18ktSale','rate22ktSale','rate14ktPurchase','rate18ktPurchase','rate22ktPurchase'].forEach(id=>document.getElementById(id).textContent='0.00');rate14ktSale=0;rate18ktSale=0;rate22ktSale=0;return;}
+      rate14ktSale=((r/10)*0.9708738)*0.583;
+      rate18ktSale=((r/10)*0.9708738)*0.75; 
+      rate22ktSale=((r/10)*0.9708738)*0.916;
+      document.getElementById('rate14ktSale').textContent=rate14ktSale.toFixed(2);
       document.getElementById('rate18ktSale').textContent=rate18ktSale.toFixed(2);
       document.getElementById('rate22ktSale').textContent=rate22ktSale.toFixed(2);
+      document.getElementById('rate14ktPurchase').textContent=(rate14ktSale-200).toFixed(2);
       document.getElementById('rate18ktPurchase').textContent=(rate18ktSale-200).toFixed(2);
       document.getElementById('rate22ktPurchase').textContent=(rate22ktSale-200).toFixed(2);
       calculateJewelleryPrice();
@@ -308,7 +329,15 @@
       const oc=parseFloat(document.getElementById('otherCosts').value) || 0;
       const p=document.querySelector('input[name="jewelleryPurity"]:checked').value;
       
-      let base=p==='18kt'?rate18ktSale:rate22ktSale;
+      let base=0;
+      if(p==='14kt'){
+        base = rate14ktSale;
+      } else if(p==='18kt'){
+        base = rate18ktSale;
+      } else if(p==='22kt'){
+        base = rate22ktSale;
+      }
+
       if(base===0){salePrice.textContent=discountedPrice.textContent='N/A';return;}
       
       const goldCost = base * w;
