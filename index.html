@@ -20,7 +20,7 @@
     /* The container-wrapper is fixed to the parent's width with overflow hidden, so only one page is visible */
     .container-wrapper { overflow: hidden; width: 100%; }
     /* The content-wrapper holds all three pages and will be translated left/right */
-    .content-wrapper { display: flex; transition: transform 0.4s ease; width: 300%; will-change: transform; }
+    .content-wrapper { display: flex; transition: transform 0.4s ease; width: 300%; will-change: transform; align-items: stretch; }
     /* Each calculator page takes up exactly 1/3 of the total content-wrapper width */
     .calculator-page { width: calc(100% / 3); flex-shrink: 0; padding: 1rem; display: flex; justify-content: center; align-items: center; }
     .swipe-indicator { animation: bounce-right 2s infinite; }
@@ -36,7 +36,7 @@
       
       <!-- First Calculator Page (Gold Rate) -->
       <div class="calculator-page">
-        <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-10 border border-gray-100 max-w-md w-full relative">
+        <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-10 border border-gray-100 max-w-md w-full h-full flex flex-col justify-between">
           <!-- New Toggle Rates button -->
           <div class="absolute top-4 right-4 sm:top-6 sm:right-6">
             <button id="toggleRatesBtn" class="text-gray-600 hover:text-[#A98E66] transition text-sm">
@@ -52,7 +52,7 @@
               Swipe Left for Jewellery Calculator <i class="fas fa-arrow-right ml-2"></i>
             </button>
           </div>
-          <p class="text-center text-gray-600 mb-8 text-lg">Enter the 9999 Gold Rate to calculate prices for all other purities.</p>
+          <p class="text-center text-gray-600 mb-8 text-lg">Enter The 9999 Gold Rate To Calculate Prices For All Other Purities</p>
           <div class="mb-6">
             <label for="rate9999" class="block text-sm font-semibold text-gray-700 mb-2">9999 Gold Rate</label>
             <input type="number" id="rate9999" placeholder="Enter Rate For 10-Grams..." class="w-full px-5 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#A98E66] focus:border-transparent shadow-sm">
@@ -66,7 +66,7 @@
 
       <!-- Second Calculator Page (Jewellery) -->
       <div class="calculator-page relative" id="jewelleryCalculator">
-        <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-10 border border-gray-100 max-w-md w-full relative">
+        <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-10 border border-gray-100 max-w-md w-full h-full relative">
           
           <!-- Settings button -->
           <div class="flex justify-between items-center w-full mb-2">
@@ -137,7 +137,7 @@
       
       <!-- Third Calculator Page (Diamond) -->
       <div class="calculator-page relative" id="diamondCalculatorPage">
-        <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-10 border border-gray-100 max-w-md w-full">
+        <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-10 border border-gray-100 max-w-md w-full h-full flex flex-col justify-between">
           <div class="flex flex-col items-center mb-6">
             <h1 class="text-3xl sm:text-4xl font-extrabold text-[#A98E66] text-center mb-2">
               Diamond Price Calculator
@@ -146,7 +146,7 @@
               <i class="fas fa-arrow-left mr-2"></i>Swipe Right to go Back
             </button>
           </div>
-          <p class="text-center text-gray-600 mb-8 text-lg">Enter diamond details to calculate total cost.</p>
+          <p class="text-center text-gray-600 mb-8 text-lg">Enter Diamond Details To Calculate Total Cost</p>
           <div class="space-y-6">
             <!-- Diamond 1 -->
             <div class="bg-gray-50 rounded-2xl p-4">
