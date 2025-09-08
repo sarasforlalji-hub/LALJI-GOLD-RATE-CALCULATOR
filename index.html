@@ -257,8 +257,6 @@
         purchase: { '14kt': 0, '18kt': 0, '22kt': 0 }
     };
     
-    const discountRate = 0.05;
-
     /**
      * Creates a debounced function that delays its execution until a specified time has passed.
      * @param {function} func The function to debounce.
@@ -376,7 +374,7 @@
     }
 
     /**
-     * Calculates the jewellery price based on weight, purity, and other costs, including or excluding 3% GST.
+     * Calculates the jewellery price based on weight, purity, and other costs, with GST applied only to the Making Charge.
      */
     function calculateJewelleryPrice(){
       const w=parseFloat(document.getElementById('jewelleryWeight').value) || 0;
@@ -398,20 +396,20 @@
         return;
       }
       
-      const goldCost = base * w;
-      const totalCost = goldCost + oc;
-      const makingCharge = totalCost * (userEnteredMC / 100);
-      let salePriceValue = totalCost + makingCharge;
-      let discountedPriceValue = totalCost * (1 + userEnteredMC / 100);
-
-      // Now apply GST based on the toggle state
-      if (isGstEnabled) {
-          salePriceValue *= 1.03;
-          discountedPriceValue *= 1.03;
-      }
+      const gstRate = isGstEnabled ? 0.03 : 0;
       
-      document.getElementById('salePrice').textContent = salePriceValue.toFixed(2);
-      document.getElementById('discountedPrice').textContent = discountedPriceValue.toFixed(2);
+      // Calculate final prices by applying GST after all other calculations
+      const calculateFinalPrice = (mcRate) => {
+        const goldCost = base * w;
+        const subtotal = goldCost + (goldCost * (mcRate / 100)) + oc;
+        return subtotal * (1 + gstRate);
+      };
+      
+      const finalSalePrice = calculateFinalPrice(userEnteredMC + 3);
+      const finalDiscountedPrice = calculateFinalPrice(userEnteredMC);
+
+      document.getElementById('salePrice').textContent = finalSalePrice.toFixed(2);
+      document.getElementById('discountedPrice').textContent = finalDiscountedPrice.toFixed(2);
     }
 
     /**
