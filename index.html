@@ -36,7 +36,7 @@
       
       <!-- First Calculator Page (Gold Rate) -->
       <div class="calculator-page">
-        <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-10 border border-gray-100 max-w-md w-full h-full flex flex-col justify-between">
+        <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-10 border border-gray-100 max-w-md w-full h-full flex flex-col justify-between relative">
           <!-- New Toggle Rates button -->
           <div class="absolute top-4 right-4 sm:top-6 sm:right-6">
             <button id="toggleRatesBtn" class="text-gray-600 hover:text-[#A98E66] transition text-sm">
@@ -65,12 +65,11 @@
       </div>
 
       <!-- Second Calculator Page (Jewellery) -->
-      <div class="calculator-page relative" id="jewelleryCalculator">
+      <div class="calculator-page" id="jewelleryCalculator">
         <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-10 border border-gray-100 max-w-md w-full h-full relative">
           
           <!-- Settings button -->
-          <div class="flex justify-between items-center w-full mb-2">
-            <div class="flex-1"></div>
+          <div class="absolute top-4 right-4 sm:top-6 sm:right-6">
             <button id="settingsBtn" class="text-gray-600 hover:text-[#A98E66] transition"><i class="fas fa-cog text-xl"></i></button>
           </div>
 
@@ -136,8 +135,8 @@
       </div>
       
       <!-- Third Calculator Page (Diamond) -->
-      <div class="calculator-page relative" id="diamondCalculatorPage">
-        <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-10 border border-gray-100 max-w-md w-full h-full flex flex-col justify-between">
+      <div class="calculator-page" id="diamondCalculatorPage">
+        <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-10 border border-gray-100 max-w-md w-full h-full flex flex-col justify-between relative">
           <div class="flex flex-col items-center mb-6">
             <h1 class="text-3xl sm:text-4xl font-extrabold text-[#A98E66] text-center mb-2">
               Diamond Price Calculator
