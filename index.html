@@ -353,9 +353,10 @@
         goldRates.sale['14kt'] = ratePerGram9708 * 0.583;
         goldRates.sale['18kt'] = ratePerGram9708 * 0.75;
         goldRates.sale['22kt'] = ratePerGram9708 * 0.916;
-        goldRates.purchase['14kt'] = goldRates.sale['14kt'] - 200;
-        goldRates.purchase['18kt'] = goldRates.sale['18kt'] - 200;
-        goldRates.purchase['22kt'] = goldRates.sale['22kt'] - 200;
+        // Updated to reduce the purchase price by ₹500
+        goldRates.purchase['14kt'] = goldRates.sale['14kt'] - 500;
+        goldRates.purchase['18kt'] = goldRates.sale['18kt'] - 500;
+        goldRates.purchase['22kt'] = goldRates.sale['22kt'] - 500;
       }
       updateGoldRatesDisplay();
       calculateJewelleryPrice();
