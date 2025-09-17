@@ -86,7 +86,8 @@
             </button>
           </div>
           <div class="flex flex-col items-center mb-6">
-            <img src="https://placehold.co/100x100/A07E5A/FFF?text=LOGO" alt="Lalji Jewellers Logo" class="mb-4 rounded-full border border-gray-300 w-24 h-24 object-contain">
+            <!-- Updated the image source to LOGO.png -->
+            <img src="LOGO.png" alt="Lalji Jewellers Logo" class="mb-4 rounded-full border border-gray-300 w-24 h-24 object-contain">
             <h1 class="text-3xl sm:text-4xl font-extrabold text-black text-center mb-2">
               Gold Rate Calculator
             </h1>
@@ -96,8 +97,8 @@
           </div>
           <p class="text-center text-gray-800 mb-8 text-lg">Enter The 9999 Gold Rate To Calculate Prices For All Other Purities</p>
           <div class="mb-6">
-            <label for="rate9999" class="block text-sm font-semibold text-gray-700 mb-2">9999 Gold Rate</label>
-            <input type="number" id="rate9999" placeholder="Enter Rate For 10-Grams..." class="w-full px-5 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-400 focus:border-transparent shadow-sm">
+            <label for="rate9999Input" class="block text-sm font-semibold text-gray-700 mb-2">9999 Gold Rate (₹/10g)</label>
+            <input type="number" id="rate9999Input" placeholder="Enter Rate..." class="w-full px-5 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-400 shadow-sm">
           </div>
           <div id="goldRatesDisplay" class="space-y-4">
           </div>
@@ -107,9 +108,7 @@
       <!-- Second Calculator Page (Jewellery) -->
       <div class="calculator-page" id="jewelleryCalculator">
         <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-10 border border-gray-100 max-w-md w-full h-full relative">
-          <!-- The settings button is now completely removed from the DOM -->
           <div class="flex flex-col items-center mb-6">
-            <!-- The h1 title is now the trigger for the hidden settings modal -->
             <h1 id="jewelleryTitle" class="text-3xl sm:text-4xl font-extrabold text-black text-center mb-2 cursor-pointer select-none">Jewellery Price Calculator</h1>
             <div class="flex justify-between w-full mt-2">
               <button class="text-gray-700 text-sm flex items-center swipe-indicator rotate-180" onclick="swipe(0)">
@@ -294,9 +293,7 @@
       touchEndX = 0,
       swipeActive = false;
     const swipeThreshold = 50;
-    // Updated swipe handling, which now also excludes the title element.
     contentWrapper.addEventListener('touchstart', e => {
-      // If the touch starts on an input, button, label, or the main title, don't start a swipe
       if (e.target.closest('button') || e.target.closest('input') || e.target.closest('label') || e.target.closest('#jewelleryTitle')) {
         swipeActive = false;
         return;
@@ -332,7 +329,7 @@
     }
     // Rates calculation
     function calculateRates() {
-      const r = parseFloat(document.getElementById('rate9999').value);
+      const r = parseFloat(document.getElementById('rate9999Input').value);
       if (isNaN(r) || r <= 0) {
         goldRates.sale = {
           '14kt': 0,
@@ -449,8 +446,6 @@
       }, 1500);
     }
     // Calculation functions for MC and Wastage
-    // Note: These functions keep the inputs in sync, proving the mathematical equivalence
-    // of the two systems as requested.
     function calculateWastageFromMC(purity, mcPercentage) {
       const tunch = tunchValues[purity];
       if (!tunch) return 0;
@@ -500,11 +495,10 @@
       showMessage(isGstEnabled ? 'GST is now enabled.' : 'GST is now disabled.');
     });
     // Event listeners
-    document.getElementById('rate9999').addEventListener('input', debounce(calculateRates, 300));
+    document.getElementById('rate9999Input').addEventListener('input', debounce(calculateRates, 300));
     document.getElementById('jewelleryWeight').addEventListener('input', debounce(calculateJewelleryPrice, 300));
     document.getElementById('otherCosts').addEventListener('input', debounce(calculateJewelleryPrice, 300));
     document.querySelectorAll('input[name="jewelleryPurity"]').forEach(r => r.addEventListener('change', () => {
-      // Recalculate based on new purity
       updateMakingWastageInputs('makingChargePercentageInput');
       calculateJewelleryPrice();
     }));
@@ -515,25 +509,31 @@
     document.getElementById('diamondCaratRate3').addEventListener('input', debounce(calculateDiamondTotal, 300));
     document.getElementById('diamondCaratWeight3').addEventListener('input', debounce(calculateDiamondTotal, 300));
     document.getElementById('toggleRatesBtn').addEventListener('click', toggleRateView);
-    // Triple-click/tap logic
+    // Corrected triple-click/tap logic
     const jewelleryTitle = document.getElementById('jewelleryTitle');
-    let lastTap = 0;
-    let tapTimestamps = [];
-    function handleTripleTapOrClick() {
+    let lastClickTime = 0;
+    let clickCount = 0;
+    function handleTripleTapOrClick(e) {
+      // Stop the event from bubbling up to prevent immediate modal closure
+      e.stopPropagation();
       const now = Date.now();
-      tapTimestamps.push(now);
-      // Keep only the last 3 timestamps
-      if (tapTimestamps.length > 3) {
-        tapTimestamps.shift();
+      // Check if the time between taps is less than 500ms
+      if (now - lastClickTime < 500) {
+        clickCount++;
+      } else {
+        clickCount = 1;
       }
-      // Check if the last three taps were within 500ms
-      if (tapTimestamps.length === 3 && (now - tapTimestamps[0] < 500)) {
-        settingsModal.classList.remove('hidden');
-        toggleGstBtn.textContent = isGstEnabled ? 'Remove GST' : 'Add GST';
-        updateMakingWastageInputs('makingChargePercentageInput');
-        showMessage('Settings menu opened!');
-        // Reset the timestamps so it doesn't open multiple times
-        tapTimestamps = [];
+      lastClickTime = now;
+      if (clickCount >= 3) {
+        // Only open the modal if we are on the correct page
+        if (currentPage === 1) {
+          settingsModal.classList.remove('hidden');
+          toggleGstBtn.textContent = isGstEnabled ? 'Remove GST' : 'Add GST';
+          updateMakingWastageInputs('makingChargePercentageInput');
+          showMessage('Settings menu opened!');
+        }
+        // Reset the counter
+        clickCount = 0;
       }
     }
     // Attach the same handler to both touchend and mousedown
