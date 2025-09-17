@@ -4,126 +4,132 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lalji Jewellers Gold Rate Calculator</title>
-
-  <!-- PWA Icons -->
-  <link rel="icon" type="image/png" href="LOGO.png">
-  <link rel="apple-touch-icon" href="LOGO.png">
-  <link rel="manifest" href="/manifest.json">
-
-  <!-- Tailwind -->
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
   <!-- Font Awesome -->
   <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" as="style" onload="this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"></noscript>
-
   <style>
-    body { font-family: 'Inter', sans-serif; background-color: #FBF8F1; }
-    /* The container-wrapper is fixed to the parent's width with overflow hidden, so only one page is visible */
-    .container-wrapper { overflow: hidden; width: 100%; }
-    /* The content-wrapper holds all three pages and will be translated left/right */
-    .content-wrapper { display: flex; transition: transform 0.4s ease; width: 300%; will-change: transform; align-items: stretch; }
-    /* Each calculator page takes up exactly 1/3 of the total content-wrapper width */
-    .calculator-page { width: calc(100% / 3); flex-shrink: 0; padding: 1rem; display: flex; justify-content: center; align-items: center; }
-    .swipe-indicator { animation: bounce-right 2s infinite; }
-    .swipe-indicator.rotate-180 { animation: bounce-left 2s infinite; }
-    @keyframes bounce-right { 0%,100%{transform:translateX(0);}50%{transform:translateX(8px);} }
-    @keyframes bounce-left { 0%,100%{transform:translateX(0);}50%{transform:translateX(-8px);} }
-
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #FBF8F1;
+    }
+    .container-wrapper {
+      overflow: hidden;
+      width: 100%;
+    }
+    .content-wrapper {
+      display: flex;
+      transition: transform 0.4s ease;
+      width: 300%;
+      will-change: transform;
+      align-items: stretch;
+    }
+    .calculator-page {
+      width: calc(100% / 3);
+      flex-shrink: 0;
+      padding: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .swipe-indicator {
+      animation: bounce-right 2s infinite;
+    }
+    .swipe-indicator.rotate-180 {
+      animation: bounce-left 2s infinite;
+    }
+    @keyframes bounce-right {
+      0%, 100% {
+        transform: translateX(0);
+      }
+      50% {
+        transform: translateX(8px);
+      }
+    }
+    @keyframes bounce-left {
+      0%, 100% {
+        transform: translateX(0);
+      }
+      50% {
+        transform: translateX(-8px);
+      }
+    }
     .message-box {
-        position: fixed;
-        bottom: 2rem;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 0.75rem 1.5rem;
-        border-radius: 9999px;
-        color: white;
-        font-weight: bold;
-        transition: opacity 0.5s ease-in-out;
-        opacity: 0;
-        pointer-events: none;
-        z-index: 1000;
-        background-color: rgba(0, 0, 0, 0.7);
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 0.75rem 1.5rem;
+      border-radius: 9999px;
+      color: white;
+      font-weight: bold;
+      transition: opacity 0.5s ease-in-out;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 1000;
+      background-color: rgba(0, 0, 0, 0.7);
     }
   </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4 sm:p-6">
-
   <div class="container-wrapper max-w-2xl w-full">
     <div id="contentWrapper" class="content-wrapper">
-      
       <!-- First Calculator Page (Gold Rate) -->
       <div class="calculator-page">
         <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-10 border border-gray-100 max-w-md w-full h-full flex flex-col justify-between relative">
-          <!-- New Toggle Rates button -->
           <div class="absolute top-4 right-4 sm:top-6 sm:right-6">
-            <button id="toggleRatesBtn" class="text-gray-600 hover:text-[#A98E66] transition text-sm">
+            <button id="toggleRatesBtn" class="text-black hover:text-gray-600 transition text-sm">
               <i class="fas fa-sync-alt text-lg"></i>
             </button>
           </div>
-          
           <div class="flex flex-col items-center mb-6">
-            <!-- Logo -->
-            <img src="LOGO.png" alt="Lalji Jewellers Logo" class="w-24 h-24 mb-4">
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-[#A98E66] text-center mb-2">
+            <img src="LOGO.png" alt="Lalji Jewellers Logo" class="mb-4 rounded-full border border-gray-300 w-24 h-24 object-contain">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-black text-center mb-2">
               Gold Rate Calculator
             </h1>
-            <button class="text-gray-500 text-sm mt-2 flex items-center swipe-indicator" onclick="swipe(1)">
+            <button class="text-gray-700 text-sm mt-2 flex items-center swipe-indicator" onclick="swipe(1)">
               Swipe Left for Jewellery Calculator <i class="fas fa-arrow-right ml-2"></i>
             </button>
           </div>
-          <p class="text-center text-gray-600 mb-8 text-lg">Enter The 9999 Gold Rate To Calculate Prices For All Other Purities</p>
+          <p class="text-center text-gray-800 mb-8 text-lg">Enter The 9999 Gold Rate To Calculate Prices For All Other Purities</p>
           <div class="mb-6">
             <label for="rate9999" class="block text-sm font-semibold text-gray-700 mb-2">9999 Gold Rate</label>
-            <input type="number" id="rate9999" placeholder="Enter Rate For 10-Grams..." class="w-full px-5 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#A98E66] focus:border-transparent shadow-sm">
+            <input type="number" id="rate9999" placeholder="Enter Rate For 10-Grams..." class="w-full px-5 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-400 focus:border-transparent shadow-sm">
           </div>
           <div id="goldRatesDisplay" class="space-y-4">
-            <!-- Rates will be dynamically populated here -->
           </div>
           <p class="text-xs text-gray-400 text-center mt-8">© Copyright Of Lalji Gems & Jewellers Pvt. Ltd.</p>
         </div>
       </div>
-
       <!-- Second Calculator Page (Jewellery) -->
       <div class="calculator-page" id="jewelleryCalculator">
         <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-10 border border-gray-100 max-w-md w-full h-full relative">
-          
-          <!-- Settings button -->
           <div class="absolute top-4 right-4 sm:top-6 sm:right-6">
-            <button id="settingsBtn" class="text-gray-600 hover:text-[#A98E66] transition"><i class="fas fa-cog text-xl"></i></button>
+            <button id="settingsBtn" class="text-black hover:text-gray-600 transition"><i class="fas fa-cog text-xl"></i></button>
           </div>
-
           <div class="flex flex-col items-center mb-6">
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-[#A98E66] text-center mb-2">Jewellery Price Calculator</h1>
-            
-            <!-- New buttons for navigation -->
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-black text-center mb-2">Jewellery Price Calculator</h1>
             <div class="flex justify-between w-full mt-2">
-              <button class="text-gray-500 text-sm flex items-center swipe-indicator rotate-180" onclick="swipe(0)">
+              <button class="text-gray-700 text-sm flex items-center swipe-indicator rotate-180" onclick="swipe(0)">
                 <i class="fas fa-arrow-left mr-2"></i>Swipe Right to go Back
               </button>
-              <button class="text-gray-500 text-sm flex items-center swipe-indicator" onclick="swipe(2)">
+              <button class="text-gray-700 text-sm flex items-center swipe-indicator" onclick="swipe(2)">
                 Swipe Left for Diamond Calculator <i class="fas fa-arrow-right ml-2"></i>
               </button>
             </div>
           </div>
-
-          <p class="text-center text-gray-600 mb-8 text-lg">Calculate Sale Price</p>
-          
-          <!-- Inputs -->
+          <p class="text-center text-gray-800 mb-8 text-lg">Calculate Sale Price</p>
           <div class="mb-6">
             <label for="jewelleryWeight" class="block text-sm font-semibold text-gray-700 mb-2">Jewellery Weight (Grams)</label>
-            <input type="number" id="jewelleryWeight" placeholder="Enter Weight..." class="w-full px-5 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#A98E66] shadow-sm">
+            <input type="number" id="jewelleryWeight" placeholder="Enter Weight..." class="w-full px-5 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-400 shadow-sm">
           </div>
-          
-          <!-- New Other Costs Field -->
           <div class="mb-6">
             <label for="otherCosts" class="block text-sm font-semibold text-gray-700 mb-2">Other Costs (₹)</label>
-            <input type="number" id="otherCosts" value="0" placeholder="Enter Other Costs..." class="w-full px-5 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#A98E66] shadow-sm">
+            <input type="number" id="otherCosts" value="0" placeholder="Enter Other Costs..." class="w-full px-5 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-400 shadow-sm">
           </div>
-
           <div class="mb-8">
             <span class="block text-sm font-semibold text-gray-700 mb-2">Purity</span>
             <div class="flex justify-around space-x-2">
@@ -138,49 +144,38 @@
               </label>
             </div>
           </div>
-
-          <!-- Results -->
           <div class="space-y-4">
-            <!-- Sale Price Field -->
             <div class="bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center">
               <span>Sale Price</span>
-              <span id="salePrice" class="text-2xl font-bold text-[#A98E66] mt-1 sm:mt-0">0.00</span>
+              <span id="salePrice" class="text-2xl font-bold text-black mt-1 sm:mt-0">0.00</span>
             </div>
-
-            <!-- Discounted Price Field -->
             <div class="bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center">
               <span>Discounted Price</span>
-              <span id="discountedPrice" class="text-2xl font-bold text-[#A98E66] mt-1 sm:mt-0">0.00</span>
+              <span id="discountedPrice" class="text-2xl font-bold text-black mt-1 sm:mt-0">0.00</span>
             </div>
-            
-            <!-- New Return Field -->
             <div class="bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center">
               <span>Return</span>
-              <span id="returnValue" class="text-2xl font-bold text-[#A98E66] mt-1 sm:mt-0">0.00 g</span>
+              <span id="returnValue" class="text-2xl font-bold text-black mt-1 sm:mt-0">0.00 g</span>
             </div>
           </div>
-
-          <!-- GST Note (Button removed) -->
           <div class="text-center mt-6">
             <p id="gstNote" class="text-sm text-gray-500">Note: All prices include 3% GST.</p>
           </div>
-          
           <p class="text-xs text-gray-400 text-center mt-6">© Copyright Of Lalji Gems & Jewellers Pvt. Ltd.</p>
         </div>
       </div>
-      
       <!-- Third Calculator Page (Diamond) -->
       <div class="calculator-page" id="diamondCalculatorPage">
         <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-10 border border-gray-100 max-w-md w-full h-full flex flex-col justify-between relative">
           <div class="flex flex-col items-center mb-6">
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-[#A98E66] text-center mb-2">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-black text-center mb-2">
               Diamond Price Calculator
             </h1>
-            <button class="text-gray-500 text-sm mt-2 flex items-center swipe-indicator rotate-180" onclick="swipe(1)">
+            <button class="text-gray-700 text-sm mt-2 flex items-center swipe-indicator rotate-180" onclick="swipe(1)">
               <i class="fas fa-arrow-left mr-2"></i>Swipe Right to go Back
             </button>
           </div>
-          <p class="text-center text-gray-600 mb-8 text-lg">Enter Diamond Details To Calculate Total Cost</p>
+          <p class="text-center text-gray-800 mb-8 text-lg">Enter Diamond Details To Calculate Total Cost</p>
           <div class="space-y-6">
             <!-- Diamond 1 -->
             <div class="bg-gray-50 rounded-2xl p-4">
@@ -188,11 +183,11 @@
               <div class="flex space-x-4">
                 <div class="w-1/2">
                   <label for="diamondCaratRate1" class="block text-xs text-gray-500">Rate/Carat</label>
-                  <input type="number" id="diamondCaratRate1" placeholder="₹" class="w-full px-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#A98E66] shadow-sm">
+                  <input type="number" id="diamondCaratRate1" placeholder="₹" class="w-full px-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-400 shadow-sm">
                 </div>
                 <div class="w-1/2">
                   <label for="diamondCaratWeight1" class="block text-xs text-gray-500">Weight (Carats)</label>
-                  <input type="number" id="diamondCaratWeight1" placeholder="Carats" class="w-full px-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#A98E66] shadow-sm">
+                  <input type="number" id="diamondCaratWeight1" placeholder="Carats" class="w-full px-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-400 shadow-sm">
                 </div>
               </div>
             </div>
@@ -202,11 +197,11 @@
               <div class="flex space-x-4">
                 <div class="w-1/2">
                   <label for="diamondCaratRate2" class="block text-xs text-gray-500">Rate/Carat</label>
-                  <input type="number" id="diamondCaratRate2" placeholder="₹" class="w-full px-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#A98E66] shadow-sm">
+                  <input type="number" id="diamondCaratRate2" placeholder="₹" class="w-full px-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-400 shadow-sm">
                 </div>
                 <div class="w-1/2">
                   <label for="diamondCaratWeight2" class="block text-xs text-gray-500">Weight (Carats)</label>
-                  <input type="number" id="diamondCaratWeight2" placeholder="Carats" class="w-full px-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#A98E66] shadow-sm">
+                  <input type="number" id="diamondCaratWeight2" placeholder="Carats" class="w-full px-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-400 shadow-sm">
                 </div>
               </div>
             </div>
@@ -216,94 +211,117 @@
               <div class="flex space-x-4">
                 <div class="w-1/2">
                   <label for="diamondCaratRate3" class="block text-xs text-gray-500">Rate/Carat</label>
-                  <input type="number" id="diamondCaratRate3" placeholder="₹" class="w-full px-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#A98E66] shadow-sm">
+                  <input type="number" id="diamondCaratRate3" placeholder="₹" class="w-full px-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-400 shadow-sm">
                 </div>
                 <div class="w-1/2">
                   <label for="diamondCaratWeight3" class="block text-xs text-gray-500">Weight (Carats)</label>
-                  <input type="number" id="diamondCaratWeight3" placeholder="Carats" class="w-full px-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#A98E66] shadow-sm">
+                  <input type="number" id="diamondCaratWeight3" placeholder="Carats" class="w-full px-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-400 shadow-sm">
                 </div>
               </div>
             </div>
             <!-- Total -->
             <div class="bg-gray-100 rounded-2xl p-4 flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center mt-6">
               <span>Total Diamond Price</span>
-              <span id="totalDiamondPrice" class="text-2xl font-bold text-[#A98E66] mt-1 sm:mt-0">0.00</span>
+              <span id="totalDiamondPrice" class="text-2xl font-bold text-black mt-1 sm:mt-0">0.00</span>
             </div>
           </div>
           <p class="text-xs text-gray-400 text-center mt-8">© Copyright Of Lalji Gems & Jewellers Pvt. Ltd.</p>
         </div>
       </div>
-
     </div>
   </div>
-
   <!-- Settings Modal -->
   <div id="settingsModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
     <div class="bg-white rounded-2xl shadow-2xl p-6 w-11/12 max-w-sm relative overflow-y-auto max-h-[90vh]">
       <button id="closeSettingsBtn" class="absolute top-3 right-3 text-gray-700 hover:text-gray-900">
         <i class="fas fa-times text-2xl"></i>
       </button>
-      <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">MC</h2>
+      <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Customization</h2>
       <div class="flex flex-col space-y-4">
-        <input type="number" id="makingChargePercentageInput" class="w-full text-center px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#A98E66]" value="17">
+        <div>
+          <label for="makingChargePercentageInput" class="block text-sm font-semibold text-gray-700 mb-2">Making Charge (%)</label>
+          <input type="number" id="makingChargePercentageInput" class="w-full text-center px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-400" value="17">
+        </div>
+        <div>
+          <label for="wastagePointsInput" class="block text-sm font-semibold text-gray-700 mb-2">Wastage Points</label>
+          <input type="number" id="wastagePointsInput" class="w-full text-center px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-400" value="0">
+        </div>
         <button id="toggleGstBtn" class="bg-gray-200 text-gray-800 rounded-lg py-2 px-4 hover:bg-gray-300 transition-colors duration-200 font-semibold">
           Remove GST
         </button>
       </div>
     </div>
   </div>
-
   <!-- Message Box for feedback -->
   <div id="messageBox" class="message-box"></div>
-
   <script>
     let isSaleRateView = true;
     let currentPage = 0;
     let isGstEnabled = true;
     let goldRates = {
-        sale: { '14kt': 0, '18kt': 0, '22kt': 0 },
-        purchase: { '14kt': 0, '18kt': 0, '22kt': 0 }
+      sale: {
+        '14kt': 0,
+        '18kt': 0,
+        '22kt': 0,
+        '9999': 0 // Added to fix the NaN issue
+      },
+      purchase: {
+        '14kt': 0,
+        '18kt': 0,
+        '22kt': 0,
+        '9999': 0 // Added to fix the NaN issue
+      }
     };
-    
+    const tunchValues = {
+      '14kt': 58.3,
+      '18kt': 75,
+      '22kt': 91.6
+    };
     /**
      * Creates a debounced function that delays its execution until a specified time has passed.
      * @param {function} func The function to debounce.
      * @param {number} delay The delay in milliseconds.
      */
-    function debounce(func,delay){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>func.apply(this,a),delay)};}
-
+    function debounce(func, delay) {
+      let t;
+      return (...a) => {
+        clearTimeout(t);
+        t = setTimeout(() => func.apply(this, a), delay)
+      };
+    }
     // Swipe handling
-    const contentWrapper=document.getElementById('contentWrapper');
-    let touchStartX=0, touchEndX=0, swipeActive=false;
-    const swipeThreshold=50;
-
+    const contentWrapper = document.getElementById('contentWrapper');
+    let touchStartX = 0,
+      touchEndX = 0,
+      swipeActive = false;
+    const swipeThreshold = 50;
     // Listens for the start of a touch event to begin tracking.
-    document.addEventListener('touchstart',e=>{
-      if(e.target.closest('button')||e.target.closest('input')||e.target.closest('label')){ 
-        swipeActive=false; 
-        return; 
+    document.addEventListener('touchstart', e => {
+      if (e.target.closest('button') || e.target.closest('input') || e.target.closest('label')) {
+        swipeActive = false;
+        return;
       }
-      swipeActive=true;
-      touchStartX=e.touches[0].clientX;
+      swipeActive = true;
+      touchStartX = e.touches[0].clientX;
     });
-
     // Listens for a touch move event to update the end position.
-    document.addEventListener('touchmove',e=>{
-      if(!swipeActive) return;
-      touchEndX=e.touches[0].clientX;
+    document.addEventListener('touchmove', e => {
+      if (!swipeActive) return;
+      touchEndX = e.touches[0].clientX;
     });
-    
     // Listens for the end of a touch event to determine if a swipe occurred.
-    document.addEventListener('touchend',()=>{
-      if(!swipeActive) return;
-      const diff=touchEndX-touchStartX;
-      if(Math.abs(diff)>swipeThreshold){
-        if(diff<0 && currentPage < 2){ swipe(currentPage + 1); }
-        else if(diff>0 && currentPage > 0){ swipe(currentPage - 1); }
+    document.addEventListener('touchend', () => {
+      if (!swipeActive) return;
+      const diff = touchEndX - touchStartX;
+      if (Math.abs(diff) > swipeThreshold) {
+        if (diff < 0 && currentPage < 2) {
+          swipe(currentPage + 1);
+        } else if (diff > 0 && currentPage > 0) {
+          swipe(currentPage - 1);
+        }
       }
-      swipeActive=false;
+      swipeActive = false;
     });
-
     /**
      * Swipes to a specific calculator page.
      * @param {number} pageIndex The index of the page to swipe to (0, 1, or 2).
@@ -312,19 +330,29 @@
       currentPage = pageIndex;
       contentWrapper.style.transform = `translateX(-${pageIndex * 100 / 3}%)`;
     }
-
     // Rates calculation
-    function calculateRates(){
-      const r=parseFloat(document.getElementById('rate9999').value);
-      if(isNaN(r)||r<=0){
-        goldRates.sale = { '14kt': 0, '18kt': 0, '22kt': 0 };
-        goldRates.purchase = { '14kt': 0, '18kt': 0, '22kt': 0 };
+    function calculateRates() {
+      const r = parseFloat(document.getElementById('rate9999').value);
+      if (isNaN(r) || r <= 0) {
+        goldRates.sale = {
+          '14kt': 0,
+          '18kt': 0,
+          '22kt': 0,
+          '9999': 0
+        };
+        goldRates.purchase = {
+          '14kt': 0,
+          '18kt': 0,
+          '22kt': 0,
+          '9999': 0
+        };
       } else {
+        goldRates.sale['9999'] = r;
+        goldRates.purchase['9999'] = r;
         const ratePerGram9708 = (r / 10) * 0.9708738;
         goldRates.sale['14kt'] = ratePerGram9708 * 0.583;
-        goldRates.sale['18kt'] = ratePerGram9708 * 0.75; 
+        goldRates.sale['18kt'] = ratePerGram9708 * 0.75;
         goldRates.sale['22kt'] = ratePerGram9708 * 0.916;
-        
         goldRates.purchase['14kt'] = goldRates.sale['14kt'] - 200;
         goldRates.purchase['18kt'] = goldRates.sale['18kt'] - 200;
         goldRates.purchase['22kt'] = goldRates.sale['22kt'] - 200;
@@ -332,37 +360,33 @@
       updateGoldRatesDisplay();
       calculateJewelleryPrice();
     }
-    
     /**
      * Updates the gold rate display based on the current view (Sale or Purchase).
      */
     function updateGoldRatesDisplay() {
-        const ratesContainer = document.getElementById('goldRatesDisplay');
-        ratesContainer.innerHTML = '';
-        const ratesToDisplay = isSaleRateView ? goldRates.sale : goldRates.purchase;
-
-        const rateNames = ['14KT', '18KT', '22KT'];
-        rateNames.forEach(name => {
-            const kt = name.toLowerCase();
-            const value = ratesToDisplay[kt];
-            const displayTitle = `${name} ${isSaleRateView ? 'Sale' : 'Purchase'} Rate`;
-            const html = `
-                <div class="bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center">
-                    <span>${displayTitle}</span>
-                    <span id="rate${kt}${isSaleRateView ? 'Sale' : 'Purchase'}" class="text-2xl font-bold text-[#A98E66] mt-1 sm:mt-0">${value.toFixed(2)}</span>
-                </div>`;
-            ratesContainer.innerHTML += html;
-        });
+      const ratesContainer = document.getElementById('goldRatesDisplay');
+      ratesContainer.innerHTML = '';
+      const ratesToDisplay = isSaleRateView ? goldRates.sale : goldRates.purchase;
+      const rateNames = ['14KT', '18KT', '22KT'];
+      rateNames.forEach(name => {
+        const kt = name.toLowerCase();
+        const value = ratesToDisplay[kt];
+        const displayTitle = `${name} ${isSaleRateView ? 'Sale' : 'Purchase'} Rate`;
+        const html = `
+          <div class="bg-gray-50 rounded-2xl p-4 flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center">
+            <span>${displayTitle}</span>
+            <span id="rate${kt}${isSaleRateView ? 'Sale' : 'Purchase'}" class="text-2xl font-bold text-black mt-1 sm:mt-0">${value.toFixed(2)}</span>
+          </div>`;
+        ratesContainer.innerHTML += html;
+      });
     }
-
     /**
      * Toggles the view between Sale Rates and Purchase Rates.
      */
     function toggleRateView() {
-        isSaleRateView = !isSaleRateView;
-        updateGoldRatesDisplay();
+      isSaleRateView = !isSaleRateView;
+      updateGoldRatesDisplay();
     }
-    
     /**
      * Calculates the total price of all diamonds based on their carat rate and weight.
      */
@@ -373,108 +397,123 @@
       const weight2 = parseFloat(document.getElementById('diamondCaratWeight2').value) || 0;
       const rate3 = parseFloat(document.getElementById('diamondCaratRate3').value) || 0;
       const weight3 = parseFloat(document.getElementById('diamondCaratWeight3').value) || 0;
-      
       const total = (rate1 * weight1) + (rate2 * weight2) + (rate3 * weight3);
       document.getElementById('totalDiamondPrice').textContent = total.toFixed(2);
-      
       document.getElementById('otherCosts').value = total.toFixed(2);
       calculateJewelleryPrice();
     }
-
     /**
      * Calculates the jewellery price based on weight, purity, and other costs, with GST applied only to the Making Charge.
      */
-    function calculateJewelleryPrice(){
-      const w=parseFloat(document.getElementById('jewelleryWeight').value) || 0;
-      const oc=parseFloat(document.getElementById('otherCosts').value) || 0;
-      const p=document.querySelector('input[name="jewelleryPurity"]:checked').value;
-      const userEnteredMC = parseFloat(document.getElementById('makingChargePercentageInput').value) || 17;
-
-      let purityDecimal = 0;
-      if(p==='14kt'){ purityDecimal = 0.583; } 
-      else if(p==='18kt'){ purityDecimal = 0.75; } 
-      else if(p==='22kt'){ purityDecimal = 0.916; }
-      
+    function calculateJewelleryPrice() {
+      const w = parseFloat(document.getElementById('jewelleryWeight').value) || 0;
+      const oc = parseFloat(document.getElementById('otherCosts').value) || 0;
+      const p = document.querySelector('input[name="jewelleryPurity"]:checked').value;
+      const userEnteredMC = parseFloat(document.getElementById('makingChargePercentageInput').value) || 0;
+      const wastagePoints = parseFloat(document.getElementById('wastagePointsInput').value) || 0;
+      let purityDecimal = tunchValues[p] / 100;
       const returnValue = w * purityDecimal;
       document.getElementById('returnValue').textContent = `${returnValue.toFixed(2)} g`;
-      
-      let base=0;
-      if(p==='14kt'){
-        base = goldRates.sale['14kt'];
-      } else if(p==='18kt'){
-        base = goldRates.sale['18kt'];
-      } else if(p==='22kt'){
-        base = goldRates.sale['22kt'];
-      }
-
-      if(base===0){
-        salePrice.textContent=discountedPrice.textContent='0.00';
+      // Fallback in case the rates are not yet calculated
+      if (goldRates.sale['9999'] === 0) {
+        salePrice.textContent = discountedPrice.textContent = '0.00';
         return;
       }
-      
       const gstRate = isGstEnabled ? 0.03 : 0;
-      
-      // Calculate final prices by applying GST after all other calculations
-      const calculateFinalPrice = (mcRate) => {
-        const goldCost = base * w;
-        const subtotal = goldCost + (goldCost * (mcRate / 100)) + oc;
-        return subtotal * (1 + gstRate);
-      };
-      
-      const finalSalePrice = calculateFinalPrice(userEnteredMC + 3);
-      const finalDiscountedPrice = calculateFinalPrice(userEnteredMC);
-
+      // Sale Price Calculation (based on making charge percentage + 3%)
+      const baseRatePerGramForSale = goldRates.sale[p];
+      const goldCostWithMC = (baseRatePerGramForSale * w) * (1 + (userEnteredMC + 3) / 100);
+      const subtotalSale = goldCostWithMC + oc;
+      const finalSalePrice = subtotalSale * (1 + gstRate);
       document.getElementById('salePrice').textContent = finalSalePrice.toFixed(2);
+      // Discounted Price Calculation (based on wastage points)
+      // This formula uses the user's specified conversion: 
+      // (999 rate / 10) * 0.9708738 * (tunch + wastage) * weight * (1 + GST) + other costs
+      const baseRate9999 = goldRates.sale['9999'] / 10 * 0.9708738;
+      const effectivePurityDecimal = (tunchValues[p] + wastagePoints) / 100;
+      const goldCostFromWastage = (baseRate9999 * effectivePurityDecimal * w);
+      const subtotalDiscounted = goldCostFromWastage + oc;
+      const finalDiscountedPrice = subtotalDiscounted * (1 + gstRate);
       document.getElementById('discountedPrice').textContent = finalDiscountedPrice.toFixed(2);
     }
-
     /**
      * Displays a temporary message box for user feedback.
      * @param {string} message The message to display.
      */
     function showMessage(message) {
-        const messageBox = document.getElementById('messageBox');
-        messageBox.textContent = message;
-        messageBox.style.opacity = '1';
-        setTimeout(() => {
-            messageBox.style.opacity = '0';
-        }, 1500);
+      const messageBox = document.getElementById('messageBox');
+      messageBox.textContent = message;
+      messageBox.style.opacity = '1';
+      setTimeout(() => {
+        messageBox.style.opacity = '0';
+      }, 1500);
     }
-
+    // Calculation functions for MC and Wastage
+    // Note: These functions keep the inputs in sync, proving the mathematical equivalence
+    // of the two systems as requested.
+    function calculateWastageFromMC(purity, mcPercentage) {
+      const tunch = tunchValues[purity];
+      if (!tunch) return 0;
+      return tunch * (mcPercentage / 100);
+    }
+    function calculateMCFromWastage(purity, wastagePoints) {
+      const tunch = tunchValues[purity];
+      if (!tunch) return 0;
+      return ((tunch + wastagePoints) / tunch - 1) * 100;
+    }
     // Modal logic
-    const settingsBtn=document.getElementById('settingsBtn');
-    const settingsModal=document.getElementById('settingsModal');
-    const closeSettingsBtn=document.getElementById('closeSettingsBtn');
-    const makingChargePercentageInput=document.getElementById('makingChargePercentageInput');
+    const settingsBtn = document.getElementById('settingsBtn');
+    const settingsModal = document.getElementById('settingsModal');
+    const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+    const makingChargePercentageInput = document.getElementById('makingChargePercentageInput');
+    const wastagePointsInput = document.getElementById('wastagePointsInput');
     const toggleGstBtn = document.getElementById('toggleGstBtn');
     const gstNote = document.getElementById('gstNote');
-    
-    settingsBtn.addEventListener('click',() => {
-        settingsModal.classList.remove('hidden');
-        toggleGstBtn.textContent = isGstEnabled ? 'Remove GST' : 'Add GST';
+    // Function to update inputs based on which one was changed
+    const updateMakingWastageInputs = (changedInputId) => {
+      const purity = document.querySelector('input[name="jewelleryPurity"]:checked').value;
+      if (changedInputId === 'makingChargePercentageInput') {
+        const mc = parseFloat(makingChargePercentageInput.value) || 0;
+        const wastage = calculateWastageFromMC(purity, mc);
+        wastagePointsInput.value = wastage.toFixed(2);
+      } else if (changedInputId === 'wastagePointsInput') {
+        const wastage = parseFloat(wastagePointsInput.value) || 0;
+        const mc = calculateMCFromWastage(purity, wastage);
+        makingChargePercentageInput.value = mc.toFixed(2);
+      }
+      calculateJewelleryPrice();
+    };
+    settingsBtn.addEventListener('click', () => {
+      settingsModal.classList.remove('hidden');
+      toggleGstBtn.textContent = isGstEnabled ? 'Remove GST' : 'Add GST';
+      updateMakingWastageInputs('makingChargePercentageInput'); // Sync inputs on open
     });
-    
-    closeSettingsBtn.addEventListener('click',()=>settingsModal.classList.add('hidden'));
-    settingsModal.addEventListener('click',e=>{if(e.target===settingsModal)settingsModal.classList.add('hidden');});
-    
+    closeSettingsBtn.addEventListener('click', () => settingsModal.classList.add('hidden'));
+    settingsModal.addEventListener('click', e => {
+      if (e.target === settingsModal) settingsModal.classList.add('hidden');
+    });
     makingChargePercentageInput.addEventListener('input', debounce(() => {
-        calculateJewelleryPrice();
+      updateMakingWastageInputs('makingChargePercentageInput');
     }, 300));
-
+    wastagePointsInput.addEventListener('input', debounce(() => {
+      updateMakingWastageInputs('wastagePointsInput');
+    }, 300));
     toggleGstBtn.addEventListener('click', () => {
-        isGstEnabled = !isGstEnabled;
-        toggleGstBtn.textContent = isGstEnabled ? 'Remove GST' : 'Add GST';
-        gstNote.textContent = isGstEnabled ? 'Note: All prices include 3% GST.' : 'Note: All prices do not include GST.';
-        calculateJewelleryPrice();
-        showMessage(isGstEnabled ? 'GST is now enabled.' : 'GST is now disabled.');
+      isGstEnabled = !isGstEnabled;
+      toggleGstBtn.textContent = isGstEnabled ? 'Remove GST' : 'Add GST';
+      gstNote.textContent = isGstEnabled ? 'Note: All prices include 3% GST.' : 'Note: All prices do not include GST.';
+      calculateJewelleryPrice();
+      showMessage(isGstEnabled ? 'GST is now enabled.' : 'GST is now disabled.');
     });
-
     // Event listeners
-    document.getElementById('rate9999').addEventListener('input',debounce(calculateRates,300));
-    document.getElementById('jewelleryWeight').addEventListener('input',debounce(calculateJewelleryPrice,300));
-    document.getElementById('otherCosts').addEventListener('input',debounce(calculateJewelleryPrice,300));
-    document.querySelectorAll('input[name="jewelleryPurity"]').forEach(r=>r.addEventListener('change',calculateJewelleryPrice));
-    
+    document.getElementById('rate9999').addEventListener('input', debounce(calculateRates, 300));
+    document.getElementById('jewelleryWeight').addEventListener('input', debounce(calculateJewelleryPrice, 300));
+    document.getElementById('otherCosts').addEventListener('input', debounce(calculateJewelleryPrice, 300));
+    document.querySelectorAll('input[name="jewelleryPurity"]').forEach(r => r.addEventListener('change', () => {
+      // Recalculate based on new purity
+      updateMakingWastageInputs('makingChargePercentageInput');
+      calculateJewelleryPrice();
+    }));
     document.getElementById('diamondCaratRate1').addEventListener('input', debounce(calculateDiamondTotal, 300));
     document.getElementById('diamondCaratWeight1').addEventListener('input', debounce(calculateDiamondTotal, 300));
     document.getElementById('diamondCaratRate2').addEventListener('input', debounce(calculateDiamondTotal, 300));
@@ -482,7 +521,6 @@
     document.getElementById('diamondCaratRate3').addEventListener('input', debounce(calculateDiamondTotal, 300));
     document.getElementById('diamondCaratWeight3').addEventListener('input', debounce(calculateDiamondTotal, 300));
     document.getElementById('toggleRatesBtn').addEventListener('click', toggleRateView);
-
     // Initial load
     updateGoldRatesDisplay();
   </script>
