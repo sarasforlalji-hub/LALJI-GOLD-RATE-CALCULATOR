@@ -86,9 +86,9 @@
             </button>
           </div>
           <div class="flex flex-col items-center mb-6">
-            <img src="LOGO.png" alt="Lalji Jewellers Logo" class="mb-4 rounded-full border border-gray-300 w-24 h-24 object-contain">
+            <img src="https://placehold.co/100x100/A07E5A/FFF?text=LOGO" alt="Lalji Jewellers Logo" class="mb-4 rounded-full border border-gray-300 w-24 h-24 object-contain">
             <h1 class="text-3xl sm:text-4xl font-extrabold text-black text-center mb-2">
-              Gold Rate Calculator 1
+              Gold Rate Calculator
             </h1>
             <button class="text-gray-700 text-sm mt-2 flex items-center swipe-indicator" onclick="swipe(1)">
               Swipe Left for Jewellery Calculator <i class="fas fa-arrow-right ml-2"></i>
@@ -294,27 +294,21 @@
       touchEndX = 0,
       swipeActive = false;
     const swipeThreshold = 50;
-    let isTripleTap = false; // Flag to disable swipe on triple tap
-    document.addEventListener('touchstart', e => {
-      // If the touch starts on an interactive element, disable swiping
-      if (e.target.closest('button') || e.target.closest('input') || e.target.closest('label')) {
+    // Updated swipe handling, which now also excludes the title element.
+    contentWrapper.addEventListener('touchstart', e => {
+      // If the touch starts on an input, button, label, or the main title, don't start a swipe
+      if (e.target.closest('button') || e.target.closest('input') || e.target.closest('label') || e.target.closest('#jewelleryTitle')) {
         swipeActive = false;
         return;
       }
       swipeActive = true;
       touchStartX = e.touches[0].clientX;
     });
-    document.addEventListener('touchmove', e => {
+    contentWrapper.addEventListener('touchmove', e => {
       if (!swipeActive) return;
       touchEndX = e.touches[0].clientX;
     });
-    // Checks for a swipe gesture on touchend
-    document.addEventListener('touchend', e => {
-      if (isTripleTap) {
-        // A triple-tap was detected, so reset the flag and do not swipe
-        isTripleTap = false;
-        return;
-      }
+    contentWrapper.addEventListener('touchend', e => {
       if (!swipeActive) return;
       const diff = touchEndX - touchStartX;
       if (Math.abs(diff) > swipeThreshold) {
@@ -325,6 +319,8 @@
         }
       }
       swipeActive = false;
+      touchStartX = 0;
+      touchEndX = 0;
     });
     /**
      * Swipes to a specific calculator page.
@@ -519,32 +515,32 @@
     document.getElementById('diamondCaratRate3').addEventListener('input', debounce(calculateDiamondTotal, 300));
     document.getElementById('diamondCaratWeight3').addEventListener('input', debounce(calculateDiamondTotal, 300));
     document.getElementById('toggleRatesBtn').addEventListener('click', toggleRateView);
-    // Triple-tap logic
-    let tapCount = 0;
-    let lastTapTime = 0;
-    document.getElementById('jewelleryTitle').addEventListener('click', () => {
-      const currentTime = new Date().getTime();
-      const timeDiff = currentTime - lastTapTime;
-      // Check for quick successive taps
-      if (timeDiff > 0 && timeDiff < 500) {
-        tapCount++;
-      } else {
-        tapCount = 1;
+    // Triple-click/tap logic
+    const jewelleryTitle = document.getElementById('jewelleryTitle');
+    let lastTap = 0;
+    let tapTimestamps = [];
+    function handleTripleTapOrClick() {
+      const now = Date.now();
+      tapTimestamps.push(now);
+      // Keep only the last 3 timestamps
+      if (tapTimestamps.length > 3) {
+        tapTimestamps.shift();
       }
-      lastTapTime = currentTime;
-      // If 3 taps in a row, open the modal and set flag
-      if (tapCount === 3) {
+      // Check if the last three taps were within 500ms
+      if (tapTimestamps.length === 3 && (now - tapTimestamps[0] < 500)) {
         settingsModal.classList.remove('hidden');
         toggleGstBtn.textContent = isGstEnabled ? 'Remove GST' : 'Add GST';
         updateMakingWastageInputs('makingChargePercentageInput');
         showMessage('Settings menu opened!');
-        isTripleTap = true; // Set the flag to disable swipe
-        tapCount = 0; // Reset for next use
+        // Reset the timestamps so it doesn't open multiple times
+        tapTimestamps = [];
       }
-    });
+    }
+    // Attach the same handler to both touchend and mousedown
+    jewelleryTitle.addEventListener('touchend', handleTripleTapOrClick);
+    jewelleryTitle.addEventListener('mousedown', handleTripleTapOrClick);
     // Initial load
     updateGoldRatesDisplay();
   </script>
 </body>
 </html>
-
