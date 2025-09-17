@@ -262,13 +262,13 @@
         '14kt': 0,
         '18kt': 0,
         '22kt': 0,
-        '9999': 0 // Added to fix the NaN issue
+        '9999': 0
       },
       purchase: {
         '14kt': 0,
         '18kt': 0,
         '22kt': 0,
-        '9999': 0 // Added to fix the NaN issue
+        '9999': 0
       }
     };
     const tunchValues = {
@@ -294,8 +294,9 @@
       touchEndX = 0,
       swipeActive = false;
     const swipeThreshold = 50;
-    // Listens for the start of a touch event to begin tracking.
+    let isTripleTap = false; // Flag to disable swipe on triple tap
     document.addEventListener('touchstart', e => {
+      // If the touch starts on an interactive element, disable swiping
       if (e.target.closest('button') || e.target.closest('input') || e.target.closest('label')) {
         swipeActive = false;
         return;
@@ -303,13 +304,17 @@
       swipeActive = true;
       touchStartX = e.touches[0].clientX;
     });
-    // Listens for a touch move event to update the end position.
     document.addEventListener('touchmove', e => {
       if (!swipeActive) return;
       touchEndX = e.touches[0].clientX;
     });
-    // Listens for the end of a touch event to determine if a swipe occurred.
-    document.addEventListener('touchend', () => {
+    // Checks for a swipe gesture on touchend
+    document.addEventListener('touchend', e => {
+      if (isTripleTap) {
+        // A triple-tap was detected, so reset the flag and do not swipe
+        isTripleTap = false;
+        return;
+      }
       if (!swipeActive) return;
       const diff = touchEndX - touchStartX;
       if (Math.abs(diff) > swipeThreshold) {
@@ -514,7 +519,7 @@
     document.getElementById('diamondCaratRate3').addEventListener('input', debounce(calculateDiamondTotal, 300));
     document.getElementById('diamondCaratWeight3').addEventListener('input', debounce(calculateDiamondTotal, 300));
     document.getElementById('toggleRatesBtn').addEventListener('click', toggleRateView);
-    // Triple-tap to open settings modal
+    // Triple-tap logic
     let tapCount = 0;
     let lastTapTime = 0;
     document.getElementById('jewelleryTitle').addEventListener('click', () => {
@@ -527,12 +532,13 @@
         tapCount = 1;
       }
       lastTapTime = currentTime;
-      // If 3 taps in a row, open the modal
+      // If 3 taps in a row, open the modal and set flag
       if (tapCount === 3) {
         settingsModal.classList.remove('hidden');
         toggleGstBtn.textContent = isGstEnabled ? 'Remove GST' : 'Add GST';
-        updateMakingWastageInputs('makingChargePercentageInput'); // Sync inputs on open
+        updateMakingWastageInputs('makingChargePercentageInput');
         showMessage('Settings menu opened!');
+        isTripleTap = true; // Set the flag to disable swipe
         tapCount = 0; // Reset for next use
       }
     });
