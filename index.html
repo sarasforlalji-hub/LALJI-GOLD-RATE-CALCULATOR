@@ -107,11 +107,10 @@
       <!-- Second Calculator Page (Jewellery) -->
       <div class="calculator-page" id="jewelleryCalculator">
         <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-10 border border-gray-100 max-w-md w-full h-full relative">
-          <div class="absolute top-4 right-4 sm:top-6 sm:right-6">
-            <button id="settingsBtn" class="text-black hover:text-gray-600 transition"><i class="fas fa-cog text-xl"></i></button>
-          </div>
+          <!-- The settings button is now completely removed from the DOM -->
           <div class="flex flex-col items-center mb-6">
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-black text-center mb-2">Jewellery Price Calculator</h1>
+            <!-- The h1 title is now the trigger for the hidden settings modal -->
+            <h1 id="jewelleryTitle" class="text-3xl sm:text-4xl font-extrabold text-black text-center mb-2 cursor-pointer select-none">Jewellery Price Calculator</h1>
             <div class="flex justify-between w-full mt-2">
               <button class="text-gray-700 text-sm flex items-center swipe-indicator rotate-180" onclick="swipe(0)">
                 <i class="fas fa-arrow-left mr-2"></i>Swipe Right to go Back
@@ -353,7 +352,6 @@
         goldRates.sale['14kt'] = ratePerGram9708 * 0.583;
         goldRates.sale['18kt'] = ratePerGram9708 * 0.75;
         goldRates.sale['22kt'] = ratePerGram9708 * 0.916;
-        // Updated to reduce the purchase price by ₹500
         goldRates.purchase['14kt'] = goldRates.sale['14kt'] - 500;
         goldRates.purchase['18kt'] = goldRates.sale['18kt'] - 500;
         goldRates.purchase['22kt'] = goldRates.sale['22kt'] - 500;
@@ -463,7 +461,6 @@
       return ((tunch + wastagePoints) / tunch - 1) * 100;
     }
     // Modal logic
-    const settingsBtn = document.getElementById('settingsBtn');
     const settingsModal = document.getElementById('settingsModal');
     const closeSettingsBtn = document.getElementById('closeSettingsBtn');
     const makingChargePercentageInput = document.getElementById('makingChargePercentageInput');
@@ -484,11 +481,6 @@
       }
       calculateJewelleryPrice();
     };
-    settingsBtn.addEventListener('click', () => {
-      settingsModal.classList.remove('hidden');
-      toggleGstBtn.textContent = isGstEnabled ? 'Remove GST' : 'Add GST';
-      updateMakingWastageInputs('makingChargePercentageInput'); // Sync inputs on open
-    });
     closeSettingsBtn.addEventListener('click', () => settingsModal.classList.add('hidden'));
     settingsModal.addEventListener('click', e => {
       if (e.target === settingsModal) settingsModal.classList.add('hidden');
@@ -522,6 +514,28 @@
     document.getElementById('diamondCaratRate3').addEventListener('input', debounce(calculateDiamondTotal, 300));
     document.getElementById('diamondCaratWeight3').addEventListener('input', debounce(calculateDiamondTotal, 300));
     document.getElementById('toggleRatesBtn').addEventListener('click', toggleRateView);
+    // Triple-tap to open settings modal
+    let tapCount = 0;
+    let lastTapTime = 0;
+    document.getElementById('jewelleryTitle').addEventListener('click', () => {
+      const currentTime = new Date().getTime();
+      const timeDiff = currentTime - lastTapTime;
+      // Check for quick successive taps
+      if (timeDiff > 0 && timeDiff < 500) {
+        tapCount++;
+      } else {
+        tapCount = 1;
+      }
+      lastTapTime = currentTime;
+      // If 3 taps in a row, open the modal
+      if (tapCount === 3) {
+        settingsModal.classList.remove('hidden');
+        toggleGstBtn.textContent = isGstEnabled ? 'Remove GST' : 'Add GST';
+        updateMakingWastageInputs('makingChargePercentageInput'); // Sync inputs on open
+        showMessage('Settings menu opened!');
+        tapCount = 0; // Reset for next use
+      }
+    });
     // Initial load
     updateGoldRatesDisplay();
   </script>
